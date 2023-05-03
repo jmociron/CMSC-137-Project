@@ -31,7 +31,7 @@ public class GameTimer extends AnimationTimer {
 	GameTimer(GraphicsContext gc, Scene theScene) {
 		this.gc = gc;
 		this.theScene = theScene;
-		this.myCannon = new Cannon("Going merry", 178, 600);
+		this.myCannon = new Cannon("Going merry", 178, 520);
 		this.myCastle = new Castle("Going merry", 0, 552);
 		// instantiate the ArrayList of Cannon
 		this.invaders = new ArrayList<Invader>();
