@@ -49,9 +49,10 @@ public class Cannon extends Sprite {
     // method called if spacebar is pressed
     public void shoot() {
         // compute for the x and y initial position of the bullet
-        int x = (int) (this.x + this.width + 20);
-        int y = (int) (this.y + this.height / 2);
-
+        int x = (int) (this.x + (this.width / 2) - 14);
+        int y = (int) (this.y + this.height - 85);
+        Bullet bullet = new Bullet(x, y);
+        bullets.add(bullet);
     }
 
     // method called if up/down/left/right arrow key is pressed.

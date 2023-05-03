@@ -55,6 +55,9 @@ public class GameTimer extends AnimationTimer {
 		this.myCannon.render(this.gc);
 		this.myCastle.render(this.gc);
 
+		moveBullets();
+		renderBullets();
+
 		/*
 		 * TODO: Call the renderInvaders and renderBullets methods
 		 */
@@ -74,6 +77,9 @@ public class GameTimer extends AnimationTimer {
 		 * TODO: Loop through the bullets arraylist of myCannon
 		 * and render each bullet to the canvas
 		 */
+		for (Bullet b : this.myCannon.getBullets()) {
+			b.render(gc);
+		}
 	}
 
 	// method that will spawn/instantiate three invaders at a random x,y location
@@ -97,6 +103,14 @@ public class GameTimer extends AnimationTimer {
 		// Loop through the bullet list and check whether a bullet is still visible.
 		for (int i = 0; i < bList.size(); i++) {
 			Bullet b = bList.get(i);
+
+			if (b.isVisible()) {
+				b.move();
+			} else { // if the bullet is not visible, remove from the bullet from the bullet
+						// arraylist
+				bList.remove(i);
+			}
+
 			/*
 			 * // * TODO: If a bullet is visible, move the bullet, else, remove the bullet
 			 * from
