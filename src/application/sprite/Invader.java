@@ -1,29 +1,36 @@
 package application.sprite;
 
+import java.util.Random;
+
 import javafx.scene.image.Image;
 
 public class Invader extends Sprite {
     public static final int MAX_Invader_SPEED = 5;
     public final static Image Invader_IMAGE = new Image("images/invader1.png", Invader.Invader_WIDTH,
             Invader.Invader_WIDTH, false, false);
-    public final static int Invader_WIDTH = 50;
+    public final static int Invader_WIDTH = 80;
     private boolean alive;
     // attribute that will determine if a Invader will initially move to the right
-    private boolean moveRight;
+//    private boolean moveRight;
     private int speed;
 
-    Invader(int x, int y) {
+    public Invader(int x, int y) {
         super(x, y);
         this.alive = true;
         this.loadImage(Invader.Invader_IMAGE);
-        /*
-         * TODO: Randomize speed of Invader and moveRight's initial value
-         */
+        Random r = new Random(); //instantiate a randomizer
+		this.speed = (r.nextInt(Invader.MAX_Invader_SPEED) + 1); //set the speed of the rock to a random value between 1 to 5
+//		this.moveRight = r.nextBoolean();
 
     }
 
     // method that changes the x position of the Invader
-    void move() {
+    public void move() {
+    	this.setDY(speed); //call setDX method and pass speed as parameter
+    	this.y += this.dy;
+		//checker if the the rock's x position is still within the GameStage width
+
+
         /*
          * TODO: If moveRight is true and if the Invader hasn't reached the right
          * boundary yet,

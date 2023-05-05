@@ -27,6 +27,10 @@ public class GameTimer extends AnimationTimer {
 	private Castle myCastle;
 	private ArrayList<Invader> invaders;
 	public static final int MAX_NUM_INVADERS = 3;
+	private long startSpawn;
+	public final Image bgGame = new Image("images/lawn.gif",GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,false,false);
+
+	private final static double SPAWN_DELAY = 3; //interval time for the rocks to be spawned
 
 	GameTimer(GraphicsContext gc, Scene theScene) {
 		this.gc = gc;
@@ -37,14 +41,17 @@ public class GameTimer extends AnimationTimer {
 		this.invaders = new ArrayList<Invader>();
 
 		// call the spawnInvaders method
-		// this.spawnInvaders();
+		 this.spawnInvaders();
+		 this.startSpawn = System.nanoTime();
 		// call method to handle mouse click event
 		this.handleKeyPressEvent();
 	}
 
 	@Override
 	public void handle(long currentNanoTime) {
-		this.gc.clearRect(0, 0, GameStage.WINDOW_WIDTH, GameStage.WINDOW_HEIGHT);
+		this.gc.clearRect(0, 0, GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT);
+		this.gc.drawImage(bgGame, 0, 0);
+        double spawnElapsedTime = (currentNanoTime - this.startSpawn) / 1000000000.0;
 
 		this.myCannon.move();
 		/*
@@ -57,6 +64,13 @@ public class GameTimer extends AnimationTimer {
 
 		moveBullets();
 		renderBullets();
+		renderInvaders();
+		moveInvaders();
+
+		if(spawnElapsedTime >= GameTimer.SPAWN_DELAY) { //spawn rocks every 5 seconds
+            this.spawnInvaders();
+            this.startSpawn = System.nanoTime();
+        }
 
 		/*
 		 * TODO: Call the renderInvaders and renderBullets methods
@@ -86,8 +100,11 @@ public class GameTimer extends AnimationTimer {
 	private void spawnInvaders() {
 		Random r = new Random();
 		for (int i = 0; i < GameTimer.MAX_NUM_INVADERS; i++) {
-			int x = r.nextInt(GameStage.WINDOW_WIDTH);
-			int y = r.nextInt(GameStage.WINDOW_HEIGHT);
+			int x = r.nextInt(GameStage.WINDOW_WIDTH- Invader.Invader_WIDTH);
+
+			Invader invader = new Invader(x,0); //add a new object rock to the rocks arraylist
+
+            this.invaders.add(invader);
 			/*
 			 * TODO: Add a new object Invader to the invaders arraylist
 			 */
@@ -125,6 +142,13 @@ public class GameTimer extends AnimationTimer {
 		// Loop through the invaders arraylist
 		for (int i = 0; i < this.invaders.size(); i++) {
 			Invader f = this.invaders.get(i);
+
+			if(f.isAlive()){ //if alive, call move method
+                f.move();
+                //f.checkCollision(this.myCastle); //check if the rock collides with myShip
+            }else{ //if not alive, remove the rock from the rock arraylist
+                invaders.remove(i);
+            }
 			/*
 			 * TODO: *If a Invader is alive, move the Invader. Else, remove the Invader
 			 * from the
