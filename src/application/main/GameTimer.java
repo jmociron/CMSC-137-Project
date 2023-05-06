@@ -9,6 +9,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import application.sprite.ShieldedInvader;
+import application.sprite.UnshieldedInvader;
 import application.main.GameStage;
 import application.sprite.Bullet;
 import application.sprite.Cannon;
@@ -36,7 +38,7 @@ public class GameTimer extends AnimationTimer {
 		this.gc = gc;
 		this.theScene = theScene;
 		this.myCannon = new Cannon("Going merry", 178, 520);
-		this.myCastle = new Castle("Going merry", 0, 552);
+		this.myCastle = new Castle("Going merry", 0, 590);
 		// instantiate the ArrayList of Cannon
 		this.invaders = new ArrayList<Invader>();
 
@@ -99,12 +101,22 @@ public class GameTimer extends AnimationTimer {
 	// method that will spawn/instantiate three invaders at a random x,y location
 	private void spawnInvaders() {
 		Random r = new Random();
+		Random invaderType = new Random();
 		for (int i = 0; i < GameTimer.MAX_NUM_INVADERS; i++) {
 			int x = r.nextInt(GameStage.WINDOW_WIDTH- Invader.Invader_WIDTH);
+			int itype = invaderType.nextInt(2);
 
-			Invader invader = new Invader(x,0); //add a new object rock to the rocks arraylist
+			if(itype == 0){
+	        	ShieldedInvader invader = new ShieldedInvader(x,0); //instantiate a shielded invader
+	        	this.invaders.add(invader);
+	        }else if(itype == 1){
+	        	UnshieldedInvader invader = new UnshieldedInvader(x,0); //instantiate a unshielded invader
+	        	this.invaders.add(invader);
+	        }
 
-            this.invaders.add(invader);
+			//Invader invader = new Invader(x,0); //add a new object rock to the rocks arraylist
+
+
 			/*
 			 * TODO: Add a new object Invader to the invaders arraylist
 			 */
@@ -145,7 +157,7 @@ public class GameTimer extends AnimationTimer {
 
 			if(f.isAlive()){ //if alive, call move method
                 f.move();
-                //f.checkCollision(this.myCastle); //check if the rock collides with myShip
+                f.checkCollision(this.myCastle, this.myCannon); //check if the rock collides with myShip
             }else{ //if not alive, remove the rock from the rock arraylist
                 invaders.remove(i);
             }

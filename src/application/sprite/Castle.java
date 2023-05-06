@@ -7,7 +7,7 @@ public class Castle extends Sprite {
     private boolean alive;
     public final static Image Castle_IMAGE = new Image("images/castle.png", Castle.Castle_WIDTH, Castle.Castle_HEIGHT,
             false, false);
-    private final static int Castle_HEIGHT = 216;
+    private final static int Castle_HEIGHT = 178;
     private final static int Castle_WIDTH = 432;
 
     public Castle(String name, int x, int y) {
