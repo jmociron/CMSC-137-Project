@@ -9,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import application.sprite.Dragon;
 import application.sprite.ShieldedInvader;
 import application.sprite.UnshieldedInvader;
 import application.main.GameStage;
@@ -30,9 +31,11 @@ public class GameTimer extends AnimationTimer {
 	private ArrayList<Invader> invaders;
 	public static final int MAX_NUM_INVADERS = 3;
 	private long startSpawn;
+	private long launchBoss;
 	public final Image bgGame = new Image("images/lawn.gif",GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,false,false);
 
 	private final static double SPAWN_DELAY = 3; //interval time for the rocks to be spawned
+	private final static double SPAWN_BOSS = 5; //time stamp when the boss shall be spawned
 
 	GameTimer(GraphicsContext gc, Scene theScene) {
 		this.gc = gc;
@@ -45,6 +48,7 @@ public class GameTimer extends AnimationTimer {
 		// call the spawnInvaders method
 		 this.spawnInvaders();
 		 this.startSpawn = System.nanoTime();
+		 this.launchBoss = System.nanoTime();
 		// call method to handle mouse click event
 		this.handleKeyPressEvent();
 	}
@@ -54,6 +58,7 @@ public class GameTimer extends AnimationTimer {
 		this.gc.clearRect(0, 0, GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT);
 		this.gc.drawImage(bgGame, 0, 0);
         double spawnElapsedTime = (currentNanoTime - this.startSpawn) / 1000000000.0;
+        double bossCountdown = (currentNanoTime - this.launchBoss) / 1000000000.0;
 
 		this.myCannon.move();
 		/*
@@ -72,6 +77,11 @@ public class GameTimer extends AnimationTimer {
 		if(spawnElapsedTime >= GameTimer.SPAWN_DELAY) { //spawn rocks every 5 seconds
             this.spawnInvaders();
             this.startSpawn = System.nanoTime();
+        }
+
+		if(bossCountdown >= GameTimer.SPAWN_BOSS){ //spawn boss when the time reaches 30 seconds
+        	this.spawnBoss();
+        	this.launchBoss = System.nanoTime();
         }
 
 		/*
@@ -123,6 +133,16 @@ public class GameTimer extends AnimationTimer {
 		}
 
 	}
+
+	private void spawnBoss(){
+    	Random r = new Random();
+    	int x = r.nextInt(GameStage.WINDOW_WIDTH- Dragon.BOSS_WIDTH);
+
+        //instantiate the dragon (boss)
+    	Dragon boss = new Dragon(x,0);
+    	this.invaders.add(boss); //add the dragon into the arraylist of invaders
+
+    }
 
 	// method that will move the bullets shot by a ship
 	private void moveBullets() {
