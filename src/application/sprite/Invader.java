@@ -13,11 +13,13 @@ public class Invader extends Sprite {
     // attribute that will determine if a Invader will initially move to the right
 //    private boolean moveRight;
     private int speed;
+    private int damage;
 
-    public Invader(int x, int y, int life) {
+    public Invader(int x, int y, int life, int damage) {
         super(x, y);
         this.alive = true;
         this.life = life;
+        this.damage = damage;
         Random r = new Random(); //instantiate a randomizer
 		this.speed = (r.nextInt(Invader.MAX_Invader_SPEED) + 1); //set the speed of the rock to a random value between 1 to 5
 //		this.moveRight = r.nextBoolean();
@@ -55,7 +57,7 @@ public class Invader extends Sprite {
     	this.life -= 1;
     }
 
-    private int getLife() {
+    protected int getLife() {
     	return this.life;
     }
 
@@ -70,7 +72,7 @@ public class Invader extends Sprite {
 					this.setVisible(false);
 				}
 
-//				ship.increaseScore();
+				castle.increaseScore();
 			}
 		}
 		if(this.collidesWith(castle)){
@@ -80,6 +82,8 @@ public class Invader extends Sprite {
 //			}
 			this.isDead();
 			this.setVisible(false);
+			castle.decreaseHealth(this.damage);
+			System.out.println(castle.getHealth());
 
 		}
     }

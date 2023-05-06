@@ -9,10 +9,14 @@ public class Castle extends Sprite {
             false, false);
     private final static int Castle_HEIGHT = 178;
     private final static int Castle_WIDTH = 432;
+    private int health;
+    private int score;
+
 
     public Castle(String name, int x, int y) {
         super(x, y);
         this.name = name;
+        this.health = 50;
         this.alive = true;
         this.loadImage(Castle.Castle_IMAGE);
     }
@@ -29,6 +33,22 @@ public class Castle extends Sprite {
 
     public void die() {
         this.alive = false;
+    }
+
+    void decreaseHealth(int damage) {
+    	this.health -= damage;
+    }
+
+    int getHealth() {
+    	return this.health;
+    }
+
+    void increaseScore() {
+    	this.score++;
+    }
+
+    int getScore() {
+    	return this.score;
     }
 
 }
