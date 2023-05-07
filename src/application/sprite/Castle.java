@@ -7,6 +7,8 @@ public class Castle extends Sprite {
     private boolean alive;
     public final static Image Castle_IMAGE = new Image("images/castle.png", Castle.Castle_WIDTH, Castle.Castle_HEIGHT,
             false, false);
+    public final static Image DCastle_IMAGE = new Image("images/destroyed_castle.png", Castle.Castle_WIDTH, Castle.Castle_HEIGHT,
+            false, false);
     private final static int Castle_HEIGHT = 178;
     private final static int Castle_WIDTH = 432;
     private int health;
@@ -32,7 +34,9 @@ public class Castle extends Sprite {
     }
 
     public void die() {
+    	this.loadImage(Castle.DCastle_IMAGE);
         this.alive = false;
+
     }
 
     void decreaseHealth(int damage) {
@@ -50,5 +54,6 @@ public class Castle extends Sprite {
     int getScore() {
     	return this.score;
     }
+
 
 }

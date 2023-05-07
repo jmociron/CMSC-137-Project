@@ -66,13 +66,17 @@ public class GameTimer extends AnimationTimer {
 		 */
 
 		// render the ship
-		this.myCannon.render(this.gc);
+		if(myCastle.isAlive() == true) {
+			this.myCannon.render(this.gc);
+			moveBullets();
+			renderBullets();
+			renderInvaders();
+			moveInvaders();
+		}
+
 		this.myCastle.render(this.gc);
 
-		moveBullets();
-		renderBullets();
-		renderInvaders();
-		moveInvaders();
+
 
 		if(spawnElapsedTime >= GameTimer.SPAWN_DELAY) { //spawn rocks every 5 seconds
             this.spawnInvaders();
