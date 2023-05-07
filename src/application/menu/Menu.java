@@ -69,7 +69,7 @@ public class Menu {
 
         Button b1 = new Button("    Start Game    ");
 
-        b1.setStyle("-fx-font: 15 Verdana; -fx-background-color: #D22B2B; -fx-text-fill: #FFFAFA; "
+        b1.setStyle("-fx-font: 15 Verdana; -fx-background-color: #369DC6; -fx-text-fill: #FFFAFA; "
         		+ "-fx-border-color:#FFFAFA; -fx-border-width: 3px; -fx-border-radius: 20; -fx-background-radius: 20;");
 
         vbox.getChildren().addAll(text);
