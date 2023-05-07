@@ -84,6 +84,9 @@ public class Invader extends Sprite {
 			this.setVisible(false);
 			castle.decreaseHealth(this.damage);
 			System.out.println(castle.getHealth());
+			if(castle.getHealth() <= 0) {
+				castle.die();
+			}
 
 		}
     }
