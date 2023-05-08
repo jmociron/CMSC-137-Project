@@ -43,7 +43,7 @@ public class Castle extends Sprite {
     	this.health -= damage;
     }
 
-    int getHealth() {
+    public int getHealth() {
     	return this.health;
     }
 
@@ -51,7 +51,7 @@ public class Castle extends Sprite {
     	this.score++;
     }
 
-    int getScore() {
+    public int getScore() {
     	return this.score;
     }
 
