@@ -69,10 +69,11 @@ public class Invader extends Sprite {
 				this.decreaseLife();
 				if(this.getLife() == 0) {
 					this.isDead();
+					castle.increaseScore();
 					this.setVisible(false);
 				}
 
-				castle.increaseScore();
+
 			}
 		}
 		if(this.collidesWith(castle)){

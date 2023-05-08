@@ -9,6 +9,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import application.sprite.Dragon;
 import application.sprite.ShieldedInvader;
 import application.sprite.UnshieldedInvader;
@@ -30,12 +33,13 @@ public class GameTimer extends AnimationTimer {
 	private Castle myCastle;
 	private ArrayList<Invader> invaders;
 	public static final int MAX_NUM_INVADERS = 3;
+	private long endGame;
 	private long startSpawn;
 	private long launchBoss;
 	public final Image bgGame = new Image("images/lawn.gif",GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,false,false);
 
 	private final static double SPAWN_DELAY = 3; //interval time for the rocks to be spawned
-	private final static double SPAWN_BOSS = 5; //time stamp when the boss shall be spawned
+	private final static double SPAWN_BOSS = 30; //time stamp when the boss shall be spawned
 
 	GameTimer(GraphicsContext gc, Scene theScene) {
 		this.gc = gc;
@@ -47,6 +51,7 @@ public class GameTimer extends AnimationTimer {
 
 		// call the spawnInvaders method
 		 this.spawnInvaders();
+		 this.endGame = System.nanoTime();
 		 this.startSpawn = System.nanoTime();
 		 this.launchBoss = System.nanoTime();
 		// call method to handle mouse click event
@@ -57,10 +62,12 @@ public class GameTimer extends AnimationTimer {
 	public void handle(long currentNanoTime) {
 		this.gc.clearRect(0, 0, GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT);
 		this.gc.drawImage(bgGame, 0, 0);
+		double gameTimer = (currentNanoTime - this.endGame) / 1000000000.0;
         double spawnElapsedTime = (currentNanoTime - this.startSpawn) / 1000000000.0;
         double bossCountdown = (currentNanoTime - this.launchBoss) / 1000000000.0;
 
 		this.myCannon.move();
+
 		/*
 		 * TODO: Call the moveBullets and moveInvaders methods
 		 */
@@ -87,6 +94,8 @@ public class GameTimer extends AnimationTimer {
         	this.spawnBoss();
         	this.launchBoss = System.nanoTime();
         }
+
+		this.showStatus(gameTimer);
 
 		/*
 		 * TODO: Call the renderInvaders and renderBullets methods
@@ -234,6 +243,20 @@ public class GameTimer extends AnimationTimer {
 	private void stopMyShip(KeyCode ke) {
 		this.myCannon.setDX(0);
 		this.myCannon.setDY(0);
+	}
+
+	private void showStatus(double gametimer){
+
+    	//this.gc.drawImage(imgView, 0, 0);
+        Font theFont = Font.font("Showcard Gothic",FontWeight.BOLD,20); //set the font type, style and size
+        this.gc.setFont(theFont);
+        this.gc.setFill(Color.WHITE); //set the text color
+        //text for the runtime of the game
+        this.gc.fillText(String.valueOf((int)(60-gametimer + 1) + " secs"), 350, 30);
+        //text for the score of the ship
+        this.gc.fillText("Score: "+String.valueOf(this.myCastle.getScore()), 330, 750);
+        //text for the strength of the ship
+      this.gc.fillText("Health: "+String.valueOf(this.myCastle.getHealth()), 10, 750);
 	}
 
 }
