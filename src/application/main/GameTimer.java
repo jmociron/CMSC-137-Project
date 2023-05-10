@@ -48,7 +48,7 @@ public class GameTimer extends AnimationTimer {
 
 	private final static double SPAWN_DELAY = 3; //interval time for the rocks to be spawned
 	private final static double SPAWN_BOSS = 30; //time stamp when the boss shall be spawned
-	private final static double GM_INTERVAL = 10; //time stamp when the boss shall be spawned
+	private final static double GM_INTERVAL = 5; //time stamp when the boss shall be spawned
 
 	GameTimer(GraphicsContext gc, Scene theScene) {
 		this.gc = gc;
@@ -57,9 +57,11 @@ public class GameTimer extends AnimationTimer {
 		this.myCastle = new Castle("Going merry", 0, 590);
 		// instantiate the ArrayList of Cannon
 		this.invaders = new ArrayList<Invader>();
+		this.gameModifiers = new ArrayList<GameModifier>();
 
 		// call the spawnInvaders method
 		 this.spawnInvaders();
+//		 this.spawnGameModifiers();
 		 this.endGame = System.nanoTime();
 		 this.startSpawn = System.nanoTime();
 		 this.launchBoss = System.nanoTime();
@@ -91,7 +93,7 @@ public class GameTimer extends AnimationTimer {
 			renderInvaders();
 			moveInvaders();
 			renderGameModifiers();
-//			checkGM();
+			checkGM();
 		}
 
 		this.myCastle.render(this.gc);
@@ -111,6 +113,7 @@ public class GameTimer extends AnimationTimer {
 		if(spawnGM >= GameTimer.GM_INTERVAL){ //spawn powerups every 10 seconds
         	this.spawnGameModifiers();
         	this.launchGM = System.nanoTime();
+        	System.out.println("as");
         }
 
 		this.showStatus(gameTimer);
@@ -142,7 +145,7 @@ public class GameTimer extends AnimationTimer {
 	private void renderGameModifiers(){
     	//iterate through the powerups and render them into the canvas
     	for(GameModifier gm: this.gameModifiers){
-//    		gm.render(this.gc);
+    		gm.render(this.gc);
     	}
     }
 
@@ -188,7 +191,7 @@ public class GameTimer extends AnimationTimer {
     	int gmType = r.nextInt(3); //randomizer for the powerup type that will appear
 
     	int x = r.nextInt(GameStage.WINDOW_WIDTH); //randomizer for x position
-    	int y = r.nextInt(GameStage.WINDOW_HEIGHT); //randomizer for y position
+    	int y = r.nextInt(GameStage.WINDOW_HEIGHT-500); //randomizer for y position
 
         if(gmType == 0){
         	Bomb gameModifier = new Bomb(x,y); //instantiate a fuel

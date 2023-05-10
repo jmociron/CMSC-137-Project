@@ -51,6 +51,9 @@ public class Castle extends Sprite {
     }
 
     void increaseScore() {
+    	if(isBoosted()) {
+    		this.score++;
+    	}
     	this.score++;
     }
 
