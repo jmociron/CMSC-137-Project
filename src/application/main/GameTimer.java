@@ -13,12 +13,18 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import application.sprite.Dragon;
+import application.sprite.GameModifier;
+import application.sprite.GameModifierTimer;
 import application.sprite.ShieldedInvader;
 import application.sprite.UnshieldedInvader;
 import application.main.GameStage;
+import application.sprite.Bomb;
 import application.sprite.Bullet;
 import application.sprite.Cannon;
+import application.sprite.CannonBooster;
+import application.sprite.BoosterTimer;
 import application.sprite.Invader;
+import application.sprite.Shield;
 import application.sprite.Castle;
 
 /*
@@ -32,14 +38,17 @@ public class GameTimer extends AnimationTimer {
 	private Cannon myCannon;
 	private Castle myCastle;
 	private ArrayList<Invader> invaders;
+	private ArrayList<GameModifier> gameModifiers;
 	public static final int MAX_NUM_INVADERS = 3;
 	private long endGame;
 	private long startSpawn;
 	private long launchBoss;
+	private long launchGM;
 	public final Image bgGame = new Image("images/lawn.gif",GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,false,false);
 
 	private final static double SPAWN_DELAY = 3; //interval time for the rocks to be spawned
 	private final static double SPAWN_BOSS = 30; //time stamp when the boss shall be spawned
+	private final static double GM_INTERVAL = 10; //time stamp when the boss shall be spawned
 
 	GameTimer(GraphicsContext gc, Scene theScene) {
 		this.gc = gc;
@@ -54,6 +63,7 @@ public class GameTimer extends AnimationTimer {
 		 this.endGame = System.nanoTime();
 		 this.startSpawn = System.nanoTime();
 		 this.launchBoss = System.nanoTime();
+		 this.launchGM = System.nanoTime();
 		// call method to handle mouse click event
 		this.handleKeyPressEvent();
 	}
@@ -65,6 +75,7 @@ public class GameTimer extends AnimationTimer {
 		double gameTimer = (currentNanoTime - this.endGame) / 1000000000.0;
         double spawnElapsedTime = (currentNanoTime - this.startSpawn) / 1000000000.0;
         double bossCountdown = (currentNanoTime - this.launchBoss) / 1000000000.0;
+        double spawnGM = (currentNanoTime - this.launchGM) / 1000000000.0;
 
 		this.myCannon.move();
 
@@ -79,6 +90,8 @@ public class GameTimer extends AnimationTimer {
 			renderBullets();
 			renderInvaders();
 			moveInvaders();
+			renderGameModifiers();
+//			checkGM();
 		}
 
 		this.myCastle.render(this.gc);
@@ -93,6 +106,11 @@ public class GameTimer extends AnimationTimer {
 		if(bossCountdown >= GameTimer.SPAWN_BOSS){ //spawn boss when the time reaches 30 seconds
         	this.spawnBoss();
         	this.launchBoss = System.nanoTime();
+        }
+
+		if(spawnGM >= GameTimer.GM_INTERVAL){ //spawn powerups every 10 seconds
+        	this.spawnGameModifiers();
+        	this.launchGM = System.nanoTime();
         }
 
 		this.showStatus(gameTimer);
@@ -120,6 +138,13 @@ public class GameTimer extends AnimationTimer {
 			b.render(gc);
 		}
 	}
+
+	private void renderGameModifiers(){
+    	//iterate through the powerups and render them into the canvas
+    	for(GameModifier gm: this.gameModifiers){
+//    		gm.render(this.gc);
+    	}
+    }
 
 	// method that will spawn/instantiate three invaders at a random x,y location
 	private void spawnInvaders() {
@@ -156,6 +181,30 @@ public class GameTimer extends AnimationTimer {
     	this.invaders.add(boss); //add the dragon into the arraylist of invaders
 
     }
+
+	private void spawnGameModifiers(){
+
+    	Random r = new Random();
+    	int gmType = r.nextInt(3); //randomizer for the powerup type that will appear
+
+    	int x = r.nextInt(GameStage.WINDOW_WIDTH); //randomizer for x position
+    	int y = r.nextInt(GameStage.WINDOW_HEIGHT); //randomizer for y position
+
+        if(gmType == 0){
+        	Bomb gameModifier = new Bomb(x,y); //instantiate a fuel
+//        	powerType = new Fuel((int)powerType.adjustX(x),(int)powerType.adjustY(y));
+        	this.gameModifiers.add(gameModifier); //add to powerup arraylist
+        }else if(gmType == 1){
+        	CannonBooster gameModifier = new CannonBooster(x,y); //instantiate a star
+//        	powerType = new Star ((int)powerType.adjustX(x),(int)powerType.adjustY(y));
+        	this.gameModifiers.add(gameModifier);//add to the powerup arraylsit
+        } else {
+        	Shield gameModifier = new Shield(x,y);
+        	this.gameModifiers.add(gameModifier);//add to the powerup arraylsit
+        }
+
+    }
+
 
 	// method that will move the bullets shot by a ship
 	private void moveBullets() {
@@ -201,6 +250,18 @@ public class GameTimer extends AnimationTimer {
 			 */
 		}
 	}
+
+	private void checkGM(){
+    	for(int i = 0; i<this.gameModifiers.size(); i++){
+    		GameModifier gm = this.gameModifiers.get(i);
+    		//checker if the powerup is visible
+    		if(gm.isVisible()){ //if visible, check if it collides with myShip by calling checkCollision method
+    			gm.checkCollision(this.myCastle, this.myCannon);
+    		}else{ //if not visible, remove from powerups arraylist
+    			gameModifiers.remove(i);
+    		}
+    	}
+    }
 
 	// method that will listen and handle the key press events
 	private void handleKeyPressEvent() {
