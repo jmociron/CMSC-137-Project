@@ -1,8 +1,8 @@
 package application.main;
 
+import application.pages.Menu;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import application.menu.Menu;
 
 
 public class Main extends Application {
