@@ -13,6 +13,8 @@ public class Castle extends Sprite {
     private final static int Castle_WIDTH = 432;
     private int health;
     private int score;
+    private boolean isBoosted;
+    private BoosterTimer timer;
 
 
     public Castle(String name, int x, int y) {
@@ -20,6 +22,7 @@ public class Castle extends Sprite {
         this.name = name;
         this.health = 50;
         this.alive = true;
+        this.isBoosted = false;
         this.loadImage(Castle.Castle_IMAGE);
     }
 
@@ -53,6 +56,26 @@ public class Castle extends Sprite {
 
     public int getScore() {
     	return this.score;
+    }
+
+    boolean isBoosted() {
+    	return this.isBoosted;
+    }
+
+    void setBoosted(){ //setter
+		if(!this.isBoosted()) { //if the ship is not immune
+            this.isBoosted = true; //the ship is immune
+            this.timer =  new BoosterTimer(this); //creates a timer
+            this.timer.start(); //starts the timer
+        }
+	}
+
+    void resetBoost() {
+    	this.isBoosted = false;
+    }
+
+    void increaseHealth(int health) {
+    	this.health += health;
     }
 
 
