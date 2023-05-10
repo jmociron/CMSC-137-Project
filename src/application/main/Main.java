@@ -17,4 +17,3 @@ public class Main extends Application {
 		welcomeStage.setStage(stage);
     }
 }
-	
