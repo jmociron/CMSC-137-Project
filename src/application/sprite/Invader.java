@@ -2,16 +2,12 @@ package application.sprite;
 
 import java.util.Random;
 
-import javafx.scene.image.Image;
-
 public class Invader extends Sprite {
     public static final int MAX_Invader_SPEED = 2;
 
     public final static int Invader_WIDTH = 80;
     private boolean alive;
     private int life;
-    // attribute that will determine if a Invader will initially move to the right
-//    private boolean moveRight;
     private int speed;
     private int damage;
 
@@ -22,7 +18,6 @@ public class Invader extends Sprite {
         this.damage = damage;
         Random r = new Random(); //instantiate a randomizer
 		this.speed = (r.nextInt(Invader.MAX_Invader_SPEED) + 1); //set the speed of the rock to a random value between 1 to 5
-//		this.moveRight = r.nextBoolean();
 
     }
 
@@ -77,10 +72,6 @@ public class Invader extends Sprite {
 			}
 		}
 		if(this.collidesWith(castle)){
-//			this.playCollisionSound();
-//			if(ship.isImmune() == false){
-//				ship.reduceStrength(Rock.ROCK_DAMAGE);
-//			}
 			this.isDead();
 			this.setVisible(false);
 			castle.decreaseHealth(this.damage);

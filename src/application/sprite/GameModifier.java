@@ -1,10 +1,5 @@
 package application.sprite;
 
-import java.nio.file.Paths;
-
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-
 public class GameModifier extends Sprite {
 	protected boolean startTimer;
 	protected GameModifierTimer timer;
@@ -31,11 +26,5 @@ public class GameModifier extends Sprite {
 	boolean isStartTimer(){
 		return this.startTimer;
 	}
-
-//	void playPickUpSound() {
-//		Media media = new Media(Paths.get(PICKUP_SOUND).toUri().toString());
-//		MediaPlayer mediaPlayer = new MediaPlayer(media);
-//		mediaPlayer.play();
-//	}
 
 }
