@@ -4,13 +4,10 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import application.main.GameStage;
-import application.main.GameTimer;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class GameStage {
 	public static final int WINDOW_HEIGHT = 768;
@@ -21,7 +18,6 @@ public class GameStage {
 	private Canvas canvas;
 	private GraphicsContext gc;
 	private GameTimer gametimer;
-	private ImageView imgView;
 
 	public final Image bgGame = new Image("images/lawn.gif",GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,false,false);
 
