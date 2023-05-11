@@ -4,18 +4,16 @@ import java.util.ArrayList;
 import java.util.Random;
 import javafx.scene.image.Image;
 import application.main.GameStage;
-import application.main.GameTimer;
 
 public class Cannon extends Sprite {
     private String name;
     private int strength;
-    private GameTimer gametimer;
     private boolean alive;
 
     private ArrayList<Bullet> bullets;
     public final static Image Cannon_IMAGE = new Image("images/cannon.png", Cannon.Cannon_WIDTH, Cannon.Cannon_WIDTH,
             false, false);
-    private final static int Cannon_WIDTH = 75;
+    public final static int Cannon_WIDTH = 75;
 
     public Cannon(String name, int x, int y) {
         super(x, y);

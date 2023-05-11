@@ -14,15 +14,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import application.sprite.Dragon;
 import application.sprite.GameModifier;
-import application.sprite.GameModifierTimer;
 import application.sprite.ShieldedInvader;
 import application.sprite.UnshieldedInvader;
-import application.main.GameStage;
 import application.sprite.Bomb;
 import application.sprite.Bullet;
 import application.sprite.Cannon;
 import application.sprite.CannonBooster;
-import application.sprite.BoosterTimer;
 import application.sprite.Invader;
 import application.sprite.Shield;
 import application.sprite.Castle;
@@ -53,19 +50,20 @@ public class GameTimer extends AnimationTimer {
 	GameTimer(GraphicsContext gc, Scene theScene) {
 		this.gc = gc;
 		this.theScene = theScene;
-		this.myCannon = new Cannon("Going merry", 178, 520);
-		this.myCastle = new Castle("Going merry", 0, 590);
+		this.myCannon = new Cannon("My Cannon", 178, 520);
+		this.myCastle = new Castle("My Castle", 0, 590);
+
 		// instantiate the ArrayList of Cannon
 		this.invaders = new ArrayList<Invader>();
 		this.gameModifiers = new ArrayList<GameModifier>();
 
 		// call the spawnInvaders method
-		 this.spawnInvaders();
-//		 this.spawnGameModifiers();
-		 this.endGame = System.nanoTime();
-		 this.startSpawn = System.nanoTime();
-		 this.launchBoss = System.nanoTime();
-		 this.launchGM = System.nanoTime();
+		this.spawnInvaders();
+		this.endGame = System.nanoTime();
+		this.startSpawn = System.nanoTime();
+		this.launchBoss = System.nanoTime();
+		this.launchGM = System.nanoTime();
+
 		// call method to handle mouse click event
 		this.handleKeyPressEvent();
 	}
@@ -191,15 +189,13 @@ public class GameTimer extends AnimationTimer {
     	int gmType = r.nextInt(3); //randomizer for the powerup type that will appear
 
     	int x = r.nextInt(GameStage.WINDOW_WIDTH); //randomizer for x position
-    	int y = r.nextInt(GameStage.WINDOW_HEIGHT-500); //randomizer for y position
+    	int y = 590 - Cannon.Cannon_WIDTH; 
 
         if(gmType == 0){
         	Bomb gameModifier = new Bomb(x,y); //instantiate a fuel
-//        	powerType = new Fuel((int)powerType.adjustX(x),(int)powerType.adjustY(y));
         	this.gameModifiers.add(gameModifier); //add to powerup arraylist
         }else if(gmType == 1){
         	CannonBooster gameModifier = new CannonBooster(x,y); //instantiate a star
-//        	powerType = new Star ((int)powerType.adjustX(x),(int)powerType.adjustY(y));
         	this.gameModifiers.add(gameModifier);//add to the powerup arraylsit
         } else {
         	Shield gameModifier = new Shield(x,y);
