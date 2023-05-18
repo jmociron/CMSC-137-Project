@@ -19,6 +19,9 @@ public class Bomb extends GameModifier {
 				cannon.getBullets().get(i).setVisible(false);
 				this.setVisible(false); //the powerup disappears
 	            castle.decreaseHealth(DAMAGE);
+	            if(castle.getHealth() <= 0) {
+					castle.die();
+				}
 			}else{ //if it does not collide with the ship
 	            if(this.isStartTimer() == false) { //if the timer has not been started yet
 	                this.timer =  new GameModifierTimer(this); //creates a timer
