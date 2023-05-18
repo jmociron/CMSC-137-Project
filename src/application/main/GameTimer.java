@@ -189,7 +189,7 @@ public class GameTimer extends AnimationTimer {
     	int gmType = r.nextInt(3); //randomizer for the powerup type that will appear
 
     	int x = r.nextInt(GameStage.WINDOW_WIDTH); //randomizer for x position
-    	int y = 590 - Cannon.Cannon_WIDTH; 
+    	int y = r.nextInt(590 - Cannon.Cannon_WIDTH);
 
         if(gmType == 0){
         	Bomb gameModifier = new Bomb(x,y); //instantiate a fuel
