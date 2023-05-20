@@ -10,8 +10,8 @@ public class Castle extends Sprite {
     public final static Image DCastle_IMAGE = new Image("images/destroyed_castle.png", Castle.Castle_WIDTH, Castle.Castle_HEIGHT,
             false, false);
     
-    private final static int Castle_WIDTH = 432;
-    private final static int Castle_HEIGHT = 178;
+    public final static int Castle_WIDTH = 432;
+    public final static int Castle_HEIGHT = 178;
     private int health;
     private int score;
     private boolean isBoosted;

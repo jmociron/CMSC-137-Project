@@ -79,10 +79,6 @@ public class GameTimer extends AnimationTimer {
 
 		this.myCannon.move();
 
-		/*
-		 * TODO: Call the moveBullets and moveInvaders methods
-		 */
-
 		// render the ship
 		if(myCastle.isAlive() == true) {
 			this.myCannon.render(this.gc);
@@ -95,8 +91,6 @@ public class GameTimer extends AnimationTimer {
 		}
 
 		this.myCastle.render(this.gc);
-
-
 
 		if(spawnElapsedTime >= GameTimer.SPAWN_DELAY) { //spawn rocks every 5 seconds
             this.spawnInvaders();
@@ -116,10 +110,6 @@ public class GameTimer extends AnimationTimer {
 
 		this.showStatus(gameTimer);
 
-		/*
-		 * TODO: Call the renderInvaders and renderBullets methods
-		 */
-
 	}
 
 	// method that will render/draw the invaders to the canvas
@@ -131,10 +121,6 @@ public class GameTimer extends AnimationTimer {
 
 	// method that will render/draw the bullets to the canvas
 	private void renderBullets() {
-		/*
-		 * TODO: Loop through the bullets arraylist of myCannon
-		 * and render each bullet to the canvas
-		 */
 		for (Bullet b : this.myCannon.getBullets()) {
 			b.render(gc);
 		}
@@ -162,13 +148,6 @@ public class GameTimer extends AnimationTimer {
 	        	UnshieldedInvader invader = new UnshieldedInvader(x,0); //instantiate a unshielded invader
 	        	this.invaders.add(invader);
 	        }
-
-			//Invader invader = new Invader(x,0); //add a new object rock to the rocks arraylist
-
-
-			/*
-			 * TODO: Add a new object Invader to the invaders arraylist
-			 */
 		}
 
 	}
@@ -188,8 +167,9 @@ public class GameTimer extends AnimationTimer {
     	Random r = new Random();
     	int gmType = r.nextInt(3); //randomizer for the powerup type that will appear
 
-    	int x = r.nextInt(GameStage.WINDOW_WIDTH); //randomizer for x position
-    	int y = r.nextInt(590 - Cannon.Cannon_WIDTH);
+		// randomizes the spawning position
+    	int x = r.nextInt(GameStage.WINDOW_WIDTH - GameModifier.GAMEMODIFIER_WIDTH);
+    	int y = r.nextInt(GameStage.WINDOW_HEIGHT - Cannon.Cannon_WIDTH - Castle.Castle_HEIGHT);
 
         if(gmType == 0){
         	Bomb gameModifier = new Bomb(x,y); //instantiate a fuel
