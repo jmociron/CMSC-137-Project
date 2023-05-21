@@ -114,14 +114,13 @@ public class GameTimer extends AnimationTimer {
 
 		this.showStatus(gameTimer);
 
-		if(!this.myCastle.isAlive() || (int)(60-gameTimer + 1) <= 0){
+		if(!this.myCastle.isAlive()){ // player loses when castle runs out of health
 			this.gameStage.flashGameOver(LOSE_NUM);
 			this.stop();
-		} else if (!this.myCastle.isAlive() && (int)(60-gameTimer + 1) <= 0){
+		} else if ((int)(60-gameTimer + 1) == 0){ // player wins if castle is still alive after time runs out
 			this.gameStage.flashGameOver(WIN_NUM);
 			this.stop();
 		}
-
 	}
 
 	// method that will render/draw the invaders to the canvas
