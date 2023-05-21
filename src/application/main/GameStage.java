@@ -28,7 +28,6 @@ public class GameStage {
 		this.scene = new Scene(root, GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,Color.CADETBLUE);
 		this.canvas = new Canvas(GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT);
 		this.gc = canvas.getGraphicsContext2D();
-		//instantiate an animation timer
 		this.gametimer = new GameTimer(this.gc,this.scene);
 	}
 

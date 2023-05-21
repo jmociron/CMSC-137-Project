@@ -1,12 +1,12 @@
 package application.sprite;
 
 public class BoosterTimer extends Thread {
-    private Castle castle; //ship attribute
+    private Castle castle; //castle attribute
     private int time; //int time
     private final static int BOOSTED_TIME = 5; //3 seconds immune time
 
     public BoosterTimer(Castle castle){ //constructor
-        this.castle = castle; //initializes the ship
+        this.castle = castle; //initializes the castle
         this.time = BoosterTimer.BOOSTED_TIME; //initializes the time
     }
 
@@ -19,7 +19,7 @@ public class BoosterTimer extends Thread {
                 System.out.println(e.getMessage());
             }
         }
-        this.castle.resetBoost();; //resets the immunity of the ship
+        this.castle.resetBoost();; //resets the immunity of the castle
     }
 
     public void run(){ //run the countdown

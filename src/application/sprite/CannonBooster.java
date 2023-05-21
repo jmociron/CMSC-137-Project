@@ -15,7 +15,6 @@ public class CannonBooster extends GameModifier {
 	public void checkCollision(Castle castle, Cannon cannon) { //method that checks if the fuel collides with the ship
 		for(int i = 0; i<cannon.getBullets().size(); i++){
 			if(this.collidesWith(cannon.getBullets().get(i))){
-//				this.playExplosionSound();
 				cannon.getBullets().get(i).setVisible(false);
 				this.setVisible(false); //the powerup disappears
 	            castle.setBoosted();
