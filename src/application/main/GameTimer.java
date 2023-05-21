@@ -117,6 +117,9 @@ public class GameTimer extends AnimationTimer {
 		if(!this.myCastle.isAlive() || (int)(60-gameTimer + 1) <= 0){
 			this.gameStage.flashGameOver(LOSE_NUM);
 			this.stop();
+		} else if (!this.myCastle.isAlive() && (int)(60-gameTimer + 1) <= 0){
+			this.gameStage.flashGameOver(WIN_NUM);
+			this.stop();
 		}
 
 	}
