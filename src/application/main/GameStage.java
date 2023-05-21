@@ -6,8 +6,15 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import application.main.GameStage;
 import javafx.scene.image.Image;
+import javafx.animation.PauseTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.util.Duration;
+
+// PAGES:
+import application.main.GameStage;
+import application.pages.GameOver;
 
 public class GameStage {
 	public static final int WINDOW_HEIGHT = 768;
@@ -28,7 +35,7 @@ public class GameStage {
 		this.scene = new Scene(root, GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,Color.CADETBLUE);
 		this.canvas = new Canvas(GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT);
 		this.gc = canvas.getGraphicsContext2D();
-		this.gametimer = new GameTimer(this.gc,this.scene);
+		this.gametimer = new GameTimer(this.gc,this.scene, this);
 	}
 
 	// method to add the stage elements
@@ -37,15 +44,27 @@ public class GameStage {
 
 		// set stage elements here
 		this.root.getChildren().add(canvas);
-
 		this.stage.setTitle("Battle of the Best Empires");
 		this.stage.setScene(this.scene);
 		stage.setResizable(false); //makes the window not resizable
 
 		// invoke the start method of the animation timer
 		this.gametimer.start();
-
 		this.stage.show();
+	}
+
+	public void flashGameOver(int result) {
+		PauseTransition transition = new PauseTransition(Duration.seconds(1));
+		transition.play();
+
+		transition.setOnFinished(new EventHandler<ActionEvent>() {
+
+			public void handle(ActionEvent arg0) {
+				GameOver gameover = new GameOver(result);
+				gameover.setStage(stage);
+				stage.setScene(gameover.getScene());
+			}
+		});
 	}
 
 }
