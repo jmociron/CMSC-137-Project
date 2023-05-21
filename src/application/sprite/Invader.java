@@ -8,7 +8,7 @@ public class Invader extends Sprite {
     public final static int Invader_WIDTH = 80;
     private boolean alive;
     private int life;
-    private int speed;
+    protected int speed;
     private int damage;
 
     public Invader(int x, int y, int life, int damage) {
@@ -23,8 +23,7 @@ public class Invader extends Sprite {
 
     // method that changes the x position of the Invader
     public void move() {
-    	this.setDY(speed); //call setDX method and pass speed as parameter
-    	this.y += this.dy;
+    	this.y += this.speed;
     }
 
     void isDead(){

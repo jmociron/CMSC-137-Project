@@ -64,6 +64,13 @@ public class Sprite {
     public int getY() {
         return this.y;
     }
+    public int getDX() {
+        return this.dx;
+    }
+
+    public int getDY() {
+        return this.dy;
+    }
 
     public boolean getVisible() {
         return visible;
@@ -76,6 +83,13 @@ public class Sprite {
     }
 
     // setters
+    public void setX(int x) {
+        this.dx = x;
+    }
+
+    public void setY(int y) {
+        this.dy = y;
+    }
     public void setDX(int dx) {
         this.dx = dx;
     }
