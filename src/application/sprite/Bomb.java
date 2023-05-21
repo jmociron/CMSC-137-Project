@@ -12,17 +12,16 @@ public class Bomb extends GameModifier {
     }
 
 
-	public void checkCollision(Castle castle, Cannon cannon) { //method that checks if the fuel collides with the ship
+	public void checkCollision(Castle castle, Cannon cannon) { //method that checks if the fuel collides with the cannon
 		for(int i = 0; i<cannon.getBullets().size(); i++){
 			if(this.collidesWith(cannon.getBullets().get(i))){
-//				this.playExplosionSound();
 				cannon.getBullets().get(i).setVisible(false);
 				this.setVisible(false); //the powerup disappears
 	            castle.decreaseHealth(DAMAGE);
 	            if(castle.getHealth() <= 0) {
 					castle.die();
 				}
-			}else{ //if it does not collide with the ship
+			}else{ //if it does not collide with the cannon
 	            if(this.isStartTimer() == false) { //if the timer has not been started yet
 	                this.timer =  new GameModifierTimer(this); //creates a timer
 	                this.timer.start(); //starts the timer

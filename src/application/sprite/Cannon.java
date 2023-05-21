@@ -39,14 +39,14 @@ public class Cannon extends Sprite {
         this.alive = false;
     }
 
-    // method that will get the bullets 'shot' by the Cannon
+    // method that will get the bullets 'shot' by the cannon
     public ArrayList<Bullet> getBullets() {
         return this.bullets;
     }
 
     // method called if spacebar is pressed
     public void shoot() {
-        // compute for the x and y initial position of the bullet
+        // compute for the x and y initial position of the bullet (constants for adjusting alignment)
         int x = (int) (this.x + (this.width / 2) - 14);
         int y = (int) (this.y + this.height - 85);
         Bullet bullet = new Bullet(x, y);
@@ -55,6 +55,7 @@ public class Cannon extends Sprite {
 
     // method called if up/down/left/right arrow key is pressed.
     public void move() {
+
         int tempx = this.x + this.dx; // computes for the position to be moved horizontally
 
         // early return if the starter has reached either ends of the screen

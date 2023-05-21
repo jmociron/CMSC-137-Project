@@ -25,23 +25,6 @@ public class Invader extends Sprite {
     public void move() {
     	this.setDY(speed); //call setDX method and pass speed as parameter
     	this.y += this.dy;
-		//checker if the the rock's x position is still within the GameStage width
-
-
-        /*
-         * TODO: If moveRight is true and if the Invader hasn't reached the right
-         * boundary yet,
-         * move the Invader to the right by changing the x position of the Invader
-         * depending on its speed
-         * else if it has reached the boundary, change the moveRight value / move to the
-         * left
-         * Else, if moveRight is false and if the Invader hasn't reached the left
-         * boundary yet,
-         * move the Invader to the left by changing the x position of the Invader
-         * depending on its speed.
-         * else if it has reached the boundary, change the moveRight value / move to the
-         * right
-         */
     }
 
     void isDead(){
@@ -59,7 +42,6 @@ public class Invader extends Sprite {
     public void checkCollision(Castle castle, Cannon cannon) {
     	for(int i = 0; i<cannon.getBullets().size(); i++){
 			if(this.collidesWith(cannon.getBullets().get(i))){
-//				this.playExplosionSound();
 				cannon.getBullets().get(i).setVisible(false);
 				this.decreaseLife();
 				if(this.getLife() == 0) {

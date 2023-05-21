@@ -41,14 +41,18 @@ public class GameTimer extends AnimationTimer {
 	private long startSpawn;
 	private long launchBoss;
 	private long launchGM;
+	private GameStage gameStage;
 	public final Image bgGame = new Image("images/lawn.gif",GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,false,false);
 
 	private final static double SPAWN_DELAY = 3; //interval time for the rocks to be spawned
 	private final static double SPAWN_BOSS = 30; //time stamp when the boss shall be spawned
 	private final static double GM_INTERVAL = 5; //time stamp when the boss shall be spawned
+	public static final int LOSE_NUM = 0;
+    public static final int WIN_NUM = 1;
 
-	GameTimer(GraphicsContext gc, Scene theScene) {
+	GameTimer(GraphicsContext gc, Scene theScene, GameStage gameStage) {
 		this.gc = gc;
+		this.gameStage = gameStage;
 		this.theScene = theScene;
 		this.myCannon = new Cannon("My Cannon", 178, 520);
 		this.myCastle = new Castle("My Castle", 0, 590);
@@ -109,6 +113,14 @@ public class GameTimer extends AnimationTimer {
         }
 
 		this.showStatus(gameTimer);
+
+		if(!this.myCastle.isAlive() || (int)(60-gameTimer + 1) <= 0){
+			this.gameStage.flashGameOver(LOSE_NUM);
+			this.stop();
+		} else if (!this.myCastle.isAlive() && (int)(60-gameTimer + 1) <= 0){
+			this.gameStage.flashGameOver(WIN_NUM);
+			this.stop();
+		}
 
 	}
 
@@ -296,7 +308,7 @@ public class GameTimer extends AnimationTimer {
         //text for the score of the ship
         this.gc.fillText("Score: "+String.valueOf(this.myCastle.getScore()), 330, 750);
         //text for the strength of the ship
-      this.gc.fillText("Health: "+String.valueOf(this.myCastle.getHealth()), 10, 750);
+		this.gc.fillText("Health: "+String.valueOf(this.myCastle.getHealth()), 10, 750);
 	}
 
 }

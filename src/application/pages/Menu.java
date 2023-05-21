@@ -85,6 +85,7 @@ public class Menu {
         
 		this.startGame(b1);
 		this.startInstructions(b2);
+		this.startAbout(b3);
 
         return vbox;
     }
@@ -107,6 +108,17 @@ public class Menu {
             	Instructions instructions = new Instructions();
             	instructions.setStage(stage);
                 System.out.println(b2.getText());
+            }
+        });
+    }
+
+	public void startAbout(Button b3) { //for instructions
+    	b3.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+            	About about = new About();
+            	about.setStage(stage);
+                System.out.println(b3.getText());
             }
         });
     }

@@ -3,7 +3,6 @@ package application.sprite;
 public class GameModifier extends Sprite {
 	protected boolean startTimer;
 	protected GameModifierTimer timer;
-//	public final static String PICKUP_SOUND = "miniproject/src/music/pickup.wav";
 	public final static int GAMEMODIFIER_WIDTH=50; //width of the powerups
 
 	public GameModifier(int xPos, int yPos) { //constructor
