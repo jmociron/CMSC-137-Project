@@ -83,10 +83,11 @@ public class Client {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter your username: ");
         String username = scanner.nextLine();
-        Socket socket = new Socket("localhost", 1236); // make sure port is same with Server.java
+        Socket socket = new Socket("localhost", 4000); // make sure port is same with Server.java
         Client client = new Client(socket, username);
         client.listenForMessage();
         client.sendMessage();
+        scanner.close();
 
     }
 }
