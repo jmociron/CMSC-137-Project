@@ -45,7 +45,7 @@ public class GameTimer extends AnimationTimer {
 	public final Image bgGame = new Image("images/lawn.gif",GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,false,false);
 
 	private final static double SPAWN_DELAY = 3; //interval time for the rocks to be spawned
-	private final static double SPAWN_BOSS = 5; //time stamp when the boss shall be spawned
+	private final static double SPAWN_BOSS = 10; //time stamp when the boss shall be spawned
 	private final static double GM_INTERVAL = 5; //time stamp when the boss shall be spawned
 	public static final int LOSE_NUM = 0;
     public static final int WIN_NUM = 1;

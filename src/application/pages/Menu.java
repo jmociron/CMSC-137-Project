@@ -56,7 +56,7 @@ public class Menu {
         this.text = new Text(" Battle of the\nBest Empires");
         this.text.setX(0);
         this.text.setY(0);
-        this.text.setFill(Color.web("#FFD7BD",1.0)); 
+        this.text.setFill(Color.web("#FFD7BD",1.0));
 		Font titleFont = Font.font("Impact",FontWeight.EXTRA_BOLD,80);
 		this.text.setFont(titleFont);
 		this.text.setStroke(Color.web("#614635",1.0));
@@ -82,7 +82,7 @@ public class Menu {
         vbox.getChildren().add(b1);
         vbox.getChildren().add(b2);
         vbox.getChildren().add(b3);
-        
+
 		this.startGame(b1);
 		this.startInstructions(b2);
 		this.startAbout(b3);
@@ -125,7 +125,7 @@ public class Menu {
 
 	public void setStage(Stage stage) {
 		this.stage = stage;
-		this.stage.setTitle("CMSC 137 Project");
+		this.stage.setTitle("Battle of the Best Empires");
 		this.stage.setScene(this.scene);
 		this.stage.show();
 	}
