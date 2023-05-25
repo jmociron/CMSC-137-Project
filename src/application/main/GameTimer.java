@@ -74,7 +74,6 @@ public class GameTimer extends AnimationTimer {
 
 	@Override
 	public void handle(long currentNanoTime) {
-		System.out.println(currentNanoTime);
 		this.gc.clearRect(0, 0, GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT);
 		this.gc.drawImage(bgGame, 0, 0);
 		double gameTimer = (currentNanoTime - this.endGame) / 1000000000.0;
