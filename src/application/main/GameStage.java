@@ -28,6 +28,8 @@ public class GameStage {
 	private GraphicsContext gc;
 	private GameTimer gametimer;
 	private boolean isPaused;
+	private long startPause;
+	private long endPause;
 	public final Image pause = new Image("images/pause.png",100,100	,false,false);
 	public final Image bgGame = new Image("images/lawn.gif",GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,false,false);
 
@@ -39,6 +41,8 @@ public class GameStage {
 		this.gc = canvas.getGraphicsContext2D();
 		this.gametimer = new GameTimer(this.gc,this.scene, this);
 		this.isPaused = false;
+		this.startPause = System.nanoTime();
+		this.endPause = System.nanoTime();
 	}
 
 	// method to add the stage elements
@@ -66,9 +70,12 @@ public class GameStage {
             public void handle(MouseEvent e) {
             	if(!gameStage.isPaused) {
             		gameStage.gametimer.stop();
+            		gameStage.startPause = System.nanoTime();
             		gameStage.isPaused = true;
             		button.setText("Resume");
             	} else {
+            		gameStage.endPause = System.nanoTime();
+            		gameStage.gametimer.addTime(gameStage.endPause-gameStage.startPause);
             		gameStage.gametimer.start();
             		gameStage.isPaused = false;
             		button.setText("Pause");

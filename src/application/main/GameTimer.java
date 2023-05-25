@@ -74,6 +74,7 @@ public class GameTimer extends AnimationTimer {
 
 	@Override
 	public void handle(long currentNanoTime) {
+		System.out.println(currentNanoTime);
 		this.gc.clearRect(0, 0, GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT);
 		this.gc.drawImage(bgGame, 0, 0);
 		double gameTimer = (currentNanoTime - this.endGame) / 1000000000.0;
@@ -308,6 +309,13 @@ public class GameTimer extends AnimationTimer {
         this.gc.fillText("Score: "+String.valueOf(this.myCastle.getScore()), 330, 750);
         //text for the strength of the ship
 		this.gc.fillText("Health: "+String.valueOf(this.myCastle.getHealth()), 10, 750);
+	}
+
+	void addTime(long time) {
+		this.endGame += time;
+		this.startSpawn += time;
+		this.launchBoss += time;
+		this.launchGM += time;
 	}
 
 }
