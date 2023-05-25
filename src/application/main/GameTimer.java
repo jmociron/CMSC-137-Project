@@ -45,7 +45,7 @@ public class GameTimer extends AnimationTimer {
 	public final Image bgGame = new Image("images/lawn.gif",GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,false,false);
 
 	private final static double SPAWN_DELAY = 3; //interval time for the rocks to be spawned
-	private final static double SPAWN_BOSS = 5; //time stamp when the boss shall be spawned
+	private final static double SPAWN_BOSS = 10; //time stamp when the boss shall be spawned
 	private final static double GM_INTERVAL = 5; //time stamp when the boss shall be spawned
 	public static final int LOSE_NUM = 0;
     public static final int WIN_NUM = 1;
@@ -308,6 +308,13 @@ public class GameTimer extends AnimationTimer {
         this.gc.fillText("Score: "+String.valueOf(this.myCastle.getScore()), 330, 750);
         //text for the strength of the ship
 		this.gc.fillText("Health: "+String.valueOf(this.myCastle.getHealth()), 10, 750);
+	}
+
+	void addTime(long time) {
+		this.endGame += time;
+		this.startSpawn += time;
+		this.launchBoss += time;
+		this.launchGM += time;
 	}
 
 }
