@@ -18,6 +18,7 @@ import javafx.util.Duration;
 // PAGES:
 import application.main.GameStage;
 import application.pages.GameOver;
+import application.pages.ChatOverlay;
 
 public class GameStage {
 	public static final int WINDOW_HEIGHT = 768;
@@ -32,6 +33,7 @@ public class GameStage {
 	private long startPause;
 	private ImageView pauseButton;
 	private long endPause;
+	private ChatOverlay overlayPane;
 	public final Image pause = new Image("images/pause.png",50,50,false,false);
 	public final Image resume = new Image("images/resume.png",40,40,false,false);
 	public final Image bgGame = new Image("images/lawn.gif",GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,false,false);
@@ -46,6 +48,7 @@ public class GameStage {
 		this.isPaused = false;
 		this.startPause = System.nanoTime();
 		this.endPause = System.nanoTime();
+		this.overlayPane = new ChatOverlay();
 	}
 
 	// method to add the stage elements
@@ -58,7 +61,9 @@ public class GameStage {
 		this.root.getChildren().add(pauseButton);
 		pauseButton.setLayoutX(10);
 		pauseButton.setLayoutY(10);
-		this.pauseGame(pauseButton, this);
+		this.root.getChildren().add(overlayPane);
+		overlayPane.setVisible(false);
+		this.pauseGame(pauseButton, this.overlayPane,this);
 		this.stage.setTitle("Battle of the Best Empires");
 		this.stage.setScene(this.scene);
 		stage.setResizable(false); //makes the window not resizable
@@ -68,7 +73,7 @@ public class GameStage {
 		this.stage.show();
 	}
 
-	void pauseGame(ImageView button, GameStage gameStage) {
+	void pauseGame(ImageView button, ChatOverlay overlay, GameStage gameStage) {
 		button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
@@ -77,6 +82,8 @@ public class GameStage {
             		gameStage.startPause = System.nanoTime();
             		button.setImage(resume);
             		gameStage.isPaused = true;
+            		overlay.setVisible(true);
+            		button.toFront();
 //            		button.setText("Resume");
             	} else {
             		gameStage.endPause = System.nanoTime();
@@ -84,6 +91,8 @@ public class GameStage {
             		gameStage.gametimer.start();
             		button.setImage(pause);
             		gameStage.isPaused = false;
+            		overlay.setVisible(false);
+            		button.toFront();
 //            		button.setText("Pause");
             	}
             }
