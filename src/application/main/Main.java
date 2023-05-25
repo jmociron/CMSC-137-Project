@@ -10,7 +10,7 @@ public class Main extends Application {
     }
 
     public void start(Stage stage) { // method for starting with the game stage
-      Menu welcomeStage = new Menu();
-		  welcomeStage.setStage(stage);
+        Menu welcomeStage = new Menu();
+        welcomeStage.setStage(stage);
     }
 }
