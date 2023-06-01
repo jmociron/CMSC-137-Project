@@ -9,6 +9,7 @@ import java.net.Socket;
 public class ChatOverlay extends Pane{
 	private TextArea chatArea;
     private TextArea inputField;
+    private String clientName = "Client2";
 
 	public ChatOverlay() {
 		setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);"); // Set the background color and transparency
@@ -42,7 +43,7 @@ public class ChatOverlay extends Pane{
 
     private void connectToChatServer() {
         try {
-            Socket socket = new Socket("localhost", 12345);
+            Socket socket = new Socket("localhost", 6000);
 
             // Create a separate thread to handle incoming messages
             Thread receiveThread = new Thread(() -> {
@@ -65,7 +66,7 @@ public class ChatOverlay extends Pane{
                     if (!message.isEmpty()) {
                         try {
                             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                            writer.write(message);
+                            writer.write(clientName +": "+message);
                             writer.newLine();
                             writer.flush();
 

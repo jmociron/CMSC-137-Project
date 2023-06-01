@@ -17,7 +17,7 @@ public class ChatServer {
 
     public void startServer() {
         try {
-            ServerSocket serverSocket = new ServerSocket(12345);
+            ServerSocket serverSocket = new ServerSocket(6000);
             System.out.println("Server started. Waiting for connections...");
 
             while (true) {
