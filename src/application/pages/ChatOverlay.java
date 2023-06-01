@@ -2,6 +2,7 @@ package application.pages;
 
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
+import application.pages.Menu;
 
 import java.io.*;
 import java.net.Socket;
@@ -9,7 +10,7 @@ import java.net.Socket;
 public class ChatOverlay extends Pane{
 	private TextArea chatArea;
     private TextArea inputField;
-    private String clientName = "Client2";
+
 
 	public ChatOverlay() {
 		setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);"); // Set the background color and transparency
@@ -66,7 +67,7 @@ public class ChatOverlay extends Pane{
                     if (!message.isEmpty()) {
                         try {
                             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                            writer.write(clientName +": "+message);
+                            writer.write(Menu.userName +": "+message);
                             writer.newLine();
                             writer.flush();
 
