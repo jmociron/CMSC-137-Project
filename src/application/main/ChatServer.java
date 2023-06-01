@@ -1,4 +1,4 @@
-package application.pages;
+package application.main;
 
 import java.io.*;
 import java.net.ServerSocket;
