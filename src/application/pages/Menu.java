@@ -16,6 +16,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import com.sun.xml.internal.ws.org.objectweb.asm.Label;
+
 import application.main.GameStage;
 
 
@@ -56,33 +59,49 @@ public class Menu {
 	}
 
 	private VBox enterUsername(VBox menu, Menu userInput) {
-		TextArea inputField;
 		VBox vbox = new VBox();
 		vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(7));
         vbox.setSpacing(10);
+		
+		// Header
 		this.text = new Text("Enter Username");
 		this.text.setX(0);
         this.text.setY(0);
         this.text.setFill(Color.web("#FFD7BD",1.0));
-		Font titleFont = Font.font("Impact",FontWeight.EXTRA_BOLD,80);
+		Font titleFont = Font.font("Impact",FontWeight.EXTRA_BOLD,50);
 		this.text.setFont(titleFont);
 		this.text.setStroke(Color.web("#614635",1.0));
 		this.text.setStrokeWidth(2);
+		
+		// Text field for user input
+		TextArea inputField;
 		inputField = new TextArea();
-		inputField.setPrefHeight(50);
-		inputField.setPrefWidth(10); //dpesmt work due to contraints of vbox
-		Button enterButton = new Button("    Confirm    ");
-		vbox.getChildren().addAll(text);
-	    vbox.getChildren().add(inputField);
-	    vbox.getChildren().add(enterButton);
+		inputField.setStyle("-fx-font: 25 Verdana; -fx-background-color: #369DC6; -fx-text-fill: #000000; " + "-fx-border-color:#369DC6; -fx-border-width: 3px;");
 
-	    enterButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		// Confirm button
+		Button enterButton = new Button("    Confirm    ");
+		enterButton.setStyle("-fx-font: 15 Verdana; -fx-background-color: #369DC6; -fx-text-fill: #FFFAFA; " + "-fx-border-color:#FFFAFA; -fx-border-width: 3px; -fx-border-radius: 20; -fx-background-radius: 20;");
+		
+		// Prompt for empty username
+		Text checkUsername = new Text();
+		checkUsername.setFill(Color.web("#D3FF69",1.0));
+		Font checkFont = Font.font("Impact",FontWeight.EXTRA_BOLD,30);
+		checkUsername.setFont(checkFont);
+		checkUsername.setStroke(Color.web("#256B55",1.0));
+		checkUsername.setStrokeWidth(2);
+		
+		vbox.getChildren().addAll(text, checkUsername, inputField, enterButton);
+		enterButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-            	userName = inputField.getText();
-            	menu.setVisible(true);
-            	userInput.unameInput.setVisible(false);
+				userName = inputField.getText();
+				if(userName.length() > 0){
+					menu.setVisible(true);
+					userInput.unameInput.setVisible(false);
+				} else {
+					checkUsername.setText("Please enter your username.");
+				}
             }
         });
 
