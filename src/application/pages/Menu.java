@@ -26,6 +26,7 @@ public class Menu {
 	private ImageView imgView;
 	private Text text;
 	private VBox vbox;
+	private VBox unameInput;
 
 	// CONSTANTS:
 	public static final int WINDOW_HEIGHT = 408;
@@ -39,6 +40,7 @@ public class Menu {
 		this.scene = new Scene(root, Menu.WINDOW_WIDTH, Menu.WINDOW_HEIGHT);
 		this.imgView = this.createBG();
 		this.vbox = this.createVBox();
+		this.unameInput = this.enterUsername();
 
 		root.getChildren().addAll(this.imgView, this.vbox);
 	}
@@ -49,6 +51,13 @@ public class Menu {
 		view.setImage(bg);
 
 		return view;
+	}
+
+	private VBox enterUsername() {
+		VBox vbox = new VBox();
+		this.text = new Text("Enter Username");
+
+		return vbox;
 	}
 
     private VBox createVBox() {
