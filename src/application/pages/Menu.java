@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -26,6 +27,7 @@ public class Menu {
 	private ImageView imgView;
 	private Text text;
 	private VBox vbox;
+	private VBox unameInput;
 
 	// CONSTANTS:
 	public static final int WINDOW_HEIGHT = 408;
@@ -33,14 +35,16 @@ public class Menu {
 	public final static String START = "start";
 	public final static String INSTRUCTIONS = "instructions";
 	public final static String ABOUT = "about";
+	public static String userName = "";
 
 	public Menu() {
 		StackPane root = new StackPane();
 		this.scene = new Scene(root, Menu.WINDOW_WIDTH, Menu.WINDOW_HEIGHT);
 		this.imgView = this.createBG();
 		this.vbox = this.createVBox();
-
-		root.getChildren().addAll(this.imgView, this.vbox);
+		this.unameInput = this.enterUsername(this.vbox,this);
+		this.vbox.setVisible(false);
+		root.getChildren().addAll(this.imgView, this.unameInput, this.vbox);
 	}
 
 	private ImageView createBG() {
@@ -49,6 +53,40 @@ public class Menu {
 		view.setImage(bg);
 
 		return view;
+	}
+
+	private VBox enterUsername(VBox menu, Menu userInput) {
+		TextArea inputField;
+		VBox vbox = new VBox();
+		vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(7));
+        vbox.setSpacing(10);
+		this.text = new Text("Enter Username");
+		this.text.setX(0);
+        this.text.setY(0);
+        this.text.setFill(Color.web("#FFD7BD",1.0));
+		Font titleFont = Font.font("Impact",FontWeight.EXTRA_BOLD,80);
+		this.text.setFont(titleFont);
+		this.text.setStroke(Color.web("#614635",1.0));
+		this.text.setStrokeWidth(2);
+		inputField = new TextArea();
+		inputField.setPrefHeight(50);
+		inputField.setPrefWidth(10); //dpesmt work due to contraints of vbox
+		Button enterButton = new Button("    Confirm    ");
+		vbox.getChildren().addAll(text);
+	    vbox.getChildren().add(inputField);
+	    vbox.getChildren().add(enterButton);
+
+	    enterButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+            	userName = inputField.getText();
+            	menu.setVisible(true);
+            	userInput.unameInput.setVisible(false);
+            }
+        });
+
+		return vbox;
 	}
 
     private VBox createVBox() {
