@@ -2,9 +2,11 @@ package application.pages;
 
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import application.main.GameStage;
 import application.pages.Menu;
 import application.sprite.Castle;
-
+import javafx.application.Platform;
 import java.io.*;
 import java.net.Socket;
 
@@ -12,13 +14,13 @@ public class ChatOverlay extends Pane{
 	private TextArea chatArea;
     private TextArea inputField;
     public static Socket socket;
-    private Castle castle;
+    private GameStage gamestage;
 
 
-	public ChatOverlay(Castle castle) {
+	public ChatOverlay(GameStage gamestage) {
 		setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);"); // Set the background color and transparency
         setPrefSize(432, 768); // Set the preferred size of the overlay screen
-        this.castle = castle;
+        this.gamestage = gamestage;
         System.out.println("haYS");
         chatArea = new TextArea();
         chatArea.setEditable(false);
@@ -65,18 +67,26 @@ public class ChatOverlay extends Pane{
                     BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String message;
                     while ((message = reader.readLine()) != null) {
-                    	if(!message.startsWith("points: ")) {
+                    	if(!message.startsWith("points: ") && !message.startsWith("confirm")) {
                     		chatArea.appendText(message + "\n");
                     	} else {
-
 		                	System.out.println(message);
 		                	if (message.startsWith("points: ")) {
 		                        String scoreString = message.substring(8);
 		                        int score = Integer.parseInt(scoreString);
-		                        if (castle.getScore() > castle.getHighestScore()) {
-		                            castle.setHighestScore(score);
-		                            System.out.println("New highest score: " + castle.getHighestScore());
+		                        if (score > gamestage.getGameTimer().getCastle().getHighestScore()) {
+		                        	gamestage.getGameTimer().getCastle().setHighestScore(score);
+		                            System.out.println("New highest score: " + gamestage.getGameTimer().getCastle().getHighestScore());
 		                        }
+		                    } else {
+		                    	if (message.startsWith("confirm")) {
+		                    		Platform.runLater(() -> {
+		                    		    gamestage.setStage((gamestage.getCurrentStage()));
+		                    		});
+//		                    		gamestage.setStage(gamestage.getCurrentStage());
+//		                    		gamestage.getGameTimer().start();
+//		                    		gamestage.getStage().show();
+			                    }
 		                    }
 //                	                chatArea.appendText(message + "\n");
 

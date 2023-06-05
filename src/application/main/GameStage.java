@@ -1,6 +1,7 @@
 package application.main;
 
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -15,6 +16,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
 
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 // PAGES:
 import application.main.GameStage;
 import application.pages.GameOver;
@@ -25,6 +32,7 @@ public class GameStage {
 	public static final int WINDOW_WIDTH = 432;
 	private Scene scene;
 	private Stage stage;
+	private Stage currentstage;
 	private Group root;
 	private Canvas canvas;
 	private GraphicsContext gc;
@@ -39,22 +47,24 @@ public class GameStage {
 	public final Image bgGame = new Image("images/lawn.gif",GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,false,false);
 
 	// the class constructor
-	public GameStage() {
+	public GameStage(Stage currentstage) {
 		this.root = new Group();
 		this.scene = new Scene(root, GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,Color.CADETBLUE);
+		this.currentstage = currentstage;
 		this.canvas = new Canvas(GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT);
 		this.gc = canvas.getGraphicsContext2D();
-		this.gametimer = new GameTimer(this.gc,this.scene, this);
-		this.isPaused = false;
-		this.startPause = System.nanoTime();
-		this.endPause = System.nanoTime();
-		this.overlayPane = new ChatOverlay(this.gametimer.getCastle());
+
+
+		this.overlayPane = new ChatOverlay(this);
 	}
 
 	// method to add the stage elements
 	public void setStage(Stage stage) {
 		this.stage = stage;
-
+		this.gametimer = new GameTimer(this.gc,this.scene, this);
+		this.isPaused = false;
+		this.startPause = System.nanoTime();
+		this.endPause = System.nanoTime();
 		// set stage elements here
 		this.root.getChildren().add(canvas);
 		pauseButton = new ImageView(pause);
@@ -111,6 +121,14 @@ public class GameStage {
 				stage.setScene(gameover.getScene());
 			}
 		});
+	}
+
+	public GameTimer getGameTimer() {
+		return this.gametimer;
+	}
+
+	public Stage getCurrentStage() {
+		return this.currentstage;
 	}
 
 }

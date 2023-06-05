@@ -377,7 +377,7 @@ public class GameTimer extends AnimationTimer {
 
 	}
 
-	Castle getCastle() {
+	public Castle getCastle() {
 		return this.myCastle;
 	}
 

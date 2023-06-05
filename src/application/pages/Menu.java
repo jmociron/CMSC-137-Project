@@ -17,6 +17,10 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
 import com.sun.xml.internal.ws.org.objectweb.asm.Label;
 
 import application.main.GameStage;
@@ -31,6 +35,7 @@ public class Menu {
 	private Text text;
 	private VBox vbox;
 	private VBox unameInput;
+	private GameStage gamestage;
 
 	// CONSTANTS:
 	public static final int WINDOW_HEIGHT = 408;
@@ -141,19 +146,27 @@ public class Menu {
         vbox.getChildren().add(b2);
         vbox.getChildren().add(b3);
 
-		this.startGame(b1);
+		this.startGame(b1, this.gamestage);
 		this.startInstructions(b2);
 		this.startAbout(b3);
 
         return vbox;
     }
 
-    public void startGame(Button b1) { // for starting the game
+    public void startGame(Button b1, GameStage theGameStage) { // for starting the game
     	b1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-            	GameStage theGameStage = new GameStage();
-        		theGameStage.setStage(stage);
+            	try {
+        			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ChatOverlay.socket.getOutputStream()));
+        	        writer.write("confirm");
+        	        writer.newLine();
+        	        writer.flush();
+        		} catch (IOException f) {
+        	        f.printStackTrace();
+        	    }
+//            	GameStage theGameStage = new GameStage();
+//        		theGameStage.setStage();
                 System.out.println(b1.getText());
             }
         });
@@ -186,6 +199,7 @@ public class Menu {
 		this.stage.setTitle("Battle of the Best Empires");
 		this.stage.setScene(this.scene);
 		this.stage.show();
+		this.gamestage = new GameStage(this.stage);
 	}
 
 	Scene getScene(){
