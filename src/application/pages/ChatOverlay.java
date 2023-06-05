@@ -36,7 +36,6 @@ public class ChatOverlay extends Pane{
         inputField.setPrefWidth(412);
 
         getChildren().addAll(chatArea, inputField);
-
         connectToChatServer();
 
     }
@@ -47,54 +46,49 @@ public class ChatOverlay extends Pane{
 
     private void connectToChatServer() {
         try {
-            socket = new Socket("localhost", 5050);
-
-            // Create a separate thread to handle incoming messages
-            Thread receiveThread = new Thread(() -> {
+            socket = new Socket("localhost", 6062);
+            Thread receiveThread = new Thread(() -> { // create a separate thread to handle incoming messages
                 try {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String message;
-                    while ((message = reader.readLine()) != null) {
-                        if(!message.startsWith("points: ") && !message.startsWith("confirm") && !message.startsWith("pause")) {
-                            chatArea.appendText(message + "\n");
-                        } else {
-                            System.out.println(message);
-                            if (message.startsWith("points: ")) {
-                                String scoreString = message.substring(8);
-                                int score = Integer.parseInt(scoreString);
-                                if (score > gamestage.getGameTimer().getCastle().getHighestScore()) {
-                                    gamestage.getGameTimer().getCastle().setHighestScore(score);
-                                    System.out.println("New highest score: " + gamestage.getGameTimer().getCastle().getHighestScore());
-                                }
-                            } else {
-                                if (message.startsWith("confirm")) {
-                                    Platform.runLater(() -> {
-                                        gamestage.setStage((gamestage.getCurrentStage()));
-                                    });
-                                } else {
-                                    if (message.startsWith("pause")) {
-                                        Platform.runLater(() -> {
-                                            if(!gamestage.isPaused()) {
-                                                gamestage.getGameTimer().stop();
-                                                gamestage.startPause = System.nanoTime();
-                                                gamestage.pauseButton.setImage(GameStage.resume);
-                                                gamestage.setPaused(true);
-                                                gamestage.getOverlayPane().setVisible(true);
-                                                gamestage.pauseButton.toFront();
-                                            } else {
-                                                gamestage.endPause = System.nanoTime();
-                                                gamestage.getGameTimer().addTime(gamestage.endPause-gamestage.startPause);
-                                                gamestage.getGameTimer().start();
-                                                gamestage.pauseButton.setImage(GameStage.pause);
-                                                gamestage.setPaused(false);
-                                                gamestage.getOverlayPane().setVisible(false);
-                                                gamestage.pauseButton.toFront();
-                                            }
-                                        });
-                                    }
-                                }
+                    while ((message = reader.readLine()) != null) { // iterates through message until message is read
+                        if (message.startsWith("points: ")) { // reads client score
+                            String scoreString = message.substring(8);
+                            int score = Integer.parseInt(scoreString);
+                            if (score > gamestage.getGameTimer().getCastle().getHighestScore()) { // sets highest scorer
+                                gamestage.getGameTimer().getCastle().setHighestScore(score);
+                                System.out.println("New highest score: " + gamestage.getGameTimer().getCastle().getHighestScore());
                             }
+                            continue;
                         }
+                        if (message.startsWith("confirm")) {
+                            Platform.runLater(() -> { // allows for code to be executed within the thread
+                                gamestage.setStage((gamestage.getCurrentStage()));
+                            });
+                            continue;
+                        }
+                        if (message.startsWith("pause")) {
+                            Platform.runLater(() -> { // allows for code to be executed within the thread
+                                if(!gamestage.isPaused()) {
+                                    gamestage.getGameTimer().stop();
+                                    gamestage.startPause = System.nanoTime(); // saves time at pause for the game to revert to later
+                                    gamestage.pauseButton.setImage(GameStage.resume);
+                                    gamestage.setPaused(true);
+                                    gamestage.getOverlayPane().setVisible(true);
+                                    gamestage.pauseButton.toFront();
+                                } else {
+                                    gamestage.endPause = System.nanoTime();
+                                    gamestage.getGameTimer().addTime(gamestage.endPause-gamestage.startPause); // reverts to time at pause
+                                    gamestage.getGameTimer().start();
+                                    gamestage.pauseButton.setImage(GameStage.pause);
+                                    gamestage.setPaused(false);
+                                    gamestage.getOverlayPane().setVisible(false); // removes overlay from view
+                                    gamestage.pauseButton.toFront();
+                                }
+                            });
+                            continue;
+                        }
+                        chatArea.appendText(message + "\n"); // reads chat message
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -102,11 +96,10 @@ public class ChatOverlay extends Pane{
             });
             receiveThread.start();
 
-            // Add event handler to send messages when Enter is pressed
-            inputField.setOnKeyPressed(event -> {
+            inputField.setOnKeyPressed(event -> { // event handler to send messages when Enter is pressed
                 if (event.getCode().toString().equals("ENTER")) {
                     String message = inputField.getText().trim();
-                    if (!message.isEmpty()) {
+                    if (!message.isEmpty()) { // sends message to all clients if message is not empty
                         try {
                             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                             writer.write(Menu.userName +": "+message);
