@@ -1,6 +1,7 @@
 package application.main;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
@@ -16,6 +17,7 @@ import application.sprite.Dragon;
 import application.sprite.GameModifier;
 import application.sprite.ShieldedInvader;
 import application.sprite.UnshieldedInvader;
+import application.pages.ChatOverlay;
 import application.sprite.Bomb;
 import application.sprite.Bullet;
 import application.sprite.Cannon;
@@ -23,6 +25,13 @@ import application.sprite.CannonBooster;
 import application.sprite.Invader;
 import application.sprite.Shield;
 import application.sprite.Castle;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 
 /*
  * The GameTimer is a subclass of the AnimationTimer class. It must override the handle method.
@@ -43,6 +52,7 @@ public class GameTimer extends AnimationTimer {
 	private long launchGM;
 	private GameStage gameStage;
 	public final Image bgGame = new Image("images/lawn.gif",GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,false,false);
+	private int highestScore;
 
 	private final static double SPAWN_DELAY = 3; //interval time for the rocks to be spawned
 	private final static double SPAWN_BOSS = 10; //time stamp when the boss shall be spawned
@@ -56,6 +66,7 @@ public class GameTimer extends AnimationTimer {
 		this.theScene = theScene;
 		this.myCannon = new Cannon("My Cannon", 178, 520);
 		this.myCastle = new Castle("My Castle", 0, 590);
+		this.highestScore = 0;
 
 		// instantiate the ArrayList of Cannon
 		this.invaders = new ArrayList<Invader>();
@@ -114,13 +125,23 @@ public class GameTimer extends AnimationTimer {
 
 		this.showStatus(gameTimer);
 
-		if(!this.myCastle.isAlive()){ // player loses when castle runs out of health
-			this.gameStage.flashGameOver(LOSE_NUM);
+		if ((int)(10-gameTimer + 1) == 0){ // player wins if castle is still alive after time runs out
+			System.out.println("dat isa lang to");
+//			try {
+//		        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ChatOverlay.socket.getOutputStream()));
+//		        writer.write("points: " + this.myCastle.getScore());
+//		        writer.newLine();
+//		        writer.flush();
+//		    } catch (IOException e) {
+//		        e.printStackTrace();
+//		    }
+//			this.gameStage.flashGameOver(WIN_NUM);
 			this.stop();
-		} else if ((int)(60-gameTimer + 1) == 0){ // player wins if castle is still alive after time runs out
-			this.gameStage.flashGameOver(WIN_NUM);
-			this.stop();
+			getWinner();
+//			this.stop();
 		}
+
+
 	}
 
 	// method that will render/draw the invaders to the canvas
@@ -303,7 +324,7 @@ public class GameTimer extends AnimationTimer {
         this.gc.setFont(theFont);
         this.gc.setFill(Color.WHITE); //set the text color
         //text for the runtime of the game
-        this.gc.fillText(String.valueOf((int)(60-gametimer + 1) + " secs"), 350, 30);
+        this.gc.fillText(String.valueOf((int)(10-gametimer + 1) + " secs"), 350, 30);
         //text for the score of the ship
         this.gc.fillText("Score: "+String.valueOf(this.myCastle.getScore()), 330, 750);
         //text for the strength of the ship
@@ -315,6 +336,49 @@ public class GameTimer extends AnimationTimer {
 		this.startSpawn += time;
 		this.launchBoss += time;
 		this.launchGM += time;
+	}
+
+	void getWinner() {
+		System.out.println(String.valueOf(myCastle.getHighestScore()) + " " + String.valueOf(myCastle.getScore()));
+		if(myCastle.getHighestScore() == myCastle.getScore()) {
+        	this.gameStage.flashGameOver(WIN_NUM);
+//        	this.stop();
+        } else {
+        	this.gameStage.flashGameOver(LOSE_NUM);
+//        	this.stop();
+        }
+
+
+//		Map.Entry<Socket,Integer> winnerScore = null;
+//		try {
+//			int highest = 0;
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(ChatOverlay.socket.getInputStream()));
+//            String message;
+//            System.out.println("dito!!");
+//            while ((message = reader.readLine()) != null) {
+//            	System.out.println("score:"+message);
+//            	if(Integer.valueOf(message) > highest) {
+//            		highest = Integer.valueOf(message);
+//            		System.out.println("here!!");
+//            	}
+////                chatArea.appendText(message + "\n");
+//            }
+//            System.out.println("highest score: " + String.valueOf(highest));
+//            if(highest == myCastle.getScore()) {
+//            	this.gameStage.flashGameOver(WIN_NUM);
+//            	this.stop();
+//            } else {
+//            	this.gameStage.flashGameOver(LOSE_NUM);
+//            	this.stop();
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+	}
+
+	public Castle getCastle() {
+		return this.myCastle;
 	}
 
 }
