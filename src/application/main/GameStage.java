@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -38,12 +39,12 @@ public class GameStage {
 	private GraphicsContext gc;
 	private GameTimer gametimer;
 	private boolean isPaused;
-	private long startPause;
-	private ImageView pauseButton;
-	private long endPause;
+	public long startPause;
+	public ImageView pauseButton;
+	public long endPause;
 	private ChatOverlay overlayPane;
-	public final Image pause = new Image("images/pause.png",50,50,false,false);
-	public final Image resume = new Image("images/resume.png",40,40,false,false);
+	public final static Image pause = new Image("images/pause.png",50,50,false,false);
+	public final static Image resume = new Image("images/resume.png",40,40,false,false);
 	public final Image bgGame = new Image("images/lawn.gif",GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,false,false);
 
 	// the class constructor
@@ -73,7 +74,7 @@ public class GameStage {
 		pauseButton.setLayoutY(10);
 		this.root.getChildren().add(overlayPane);
 		overlayPane.setVisible(false);
-		this.pauseGame(pauseButton, this.overlayPane,this);
+		this.pauseGame(pauseButton);
 		this.stage.setTitle("Battle of the Best Empires");
 		this.stage.setScene(this.scene);
 		stage.setResizable(false); //makes the window not resizable
@@ -83,28 +84,19 @@ public class GameStage {
 		this.stage.show();
 	}
 
-	void pauseGame(ImageView button, ChatOverlay overlay, GameStage gameStage) {
+	void pauseGame(ImageView button) {
 		button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-            	if(!gameStage.isPaused) {
-            		gameStage.gametimer.stop();
-            		gameStage.startPause = System.nanoTime();
-            		button.setImage(resume);
-            		gameStage.isPaused = true;
-            		overlay.setVisible(true);
-            		button.toFront();
-//            		button.setText("Resume");
-            	} else {
-            		gameStage.endPause = System.nanoTime();
-            		gameStage.gametimer.addTime(gameStage.endPause-gameStage.startPause);
-            		gameStage.gametimer.start();
-            		button.setImage(pause);
-            		gameStage.isPaused = false;
-            		overlay.setVisible(false);
-            		button.toFront();
-//            		button.setText("Pause");
-            	}
+            	try {
+            		System.out.println("magpause ka!!");
+        			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ChatOverlay.socket.getOutputStream()));
+        	        writer.write("pause");
+        	        writer.newLine();
+        	        writer.flush();
+        		} catch (IOException f) {
+        	        f.printStackTrace();
+        	    }
             }
         });
 	}
@@ -129,6 +121,18 @@ public class GameStage {
 
 	public Stage getCurrentStage() {
 		return this.currentstage;
+	}
+
+	public boolean isPaused() {
+		return this.isPaused;
+	}
+
+	public void setPaused(boolean paused) {
+		this.isPaused = paused;
+	}
+
+	public Pane getOverlayPane() {
+		return this.overlayPane;
 	}
 
 }
