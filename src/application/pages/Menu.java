@@ -63,7 +63,7 @@ public class Menu {
 		vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(7));
         vbox.setSpacing(10);
-		
+
 		// Header
 		this.text = new Text("Enter Username");
 		this.text.setX(0);
@@ -73,16 +73,17 @@ public class Menu {
 		this.text.setFont(titleFont);
 		this.text.setStroke(Color.web("#614635",1.0));
 		this.text.setStrokeWidth(2);
-		
+
 		// Text field for user input
 		TextArea inputField;
 		inputField = new TextArea();
 		inputField.setStyle("-fx-font: 25 Verdana; -fx-background-color: #369DC6; -fx-text-fill: #000000; " + "-fx-border-color:#369DC6; -fx-border-width: 3px;");
+		inputField.setPrefHeight(50);
 
 		// Confirm button
 		Button enterButton = new Button("    Confirm    ");
 		enterButton.setStyle("-fx-font: 15 Verdana; -fx-background-color: #369DC6; -fx-text-fill: #FFFAFA; " + "-fx-border-color:#FFFAFA; -fx-border-width: 3px; -fx-border-radius: 20; -fx-background-radius: 20;");
-		
+
 		// Prompt for empty username
 		Text checkUsername = new Text();
 		checkUsername.setFill(Color.web("#D3FF69",1.0));
@@ -90,7 +91,7 @@ public class Menu {
 		checkUsername.setFont(checkFont);
 		checkUsername.setStroke(Color.web("#256B55",1.0));
 		checkUsername.setStrokeWidth(2);
-		
+
 		vbox.getChildren().addAll(text, checkUsername, inputField, enterButton);
 		enterButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override

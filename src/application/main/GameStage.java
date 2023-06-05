@@ -48,7 +48,7 @@ public class GameStage {
 		this.isPaused = false;
 		this.startPause = System.nanoTime();
 		this.endPause = System.nanoTime();
-		this.overlayPane = new ChatOverlay();
+		this.overlayPane = new ChatOverlay(this.gametimer.getCastle());
 	}
 
 	// method to add the stage elements
