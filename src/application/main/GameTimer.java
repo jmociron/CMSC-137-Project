@@ -1,7 +1,6 @@
 package application.main;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Random;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
@@ -17,7 +16,6 @@ import application.sprite.Dragon;
 import application.sprite.GameModifier;
 import application.sprite.ShieldedInvader;
 import application.sprite.UnshieldedInvader;
-import application.pages.ChatOverlay;
 import application.sprite.Bomb;
 import application.sprite.Bullet;
 import application.sprite.Cannon;
@@ -25,13 +23,6 @@ import application.sprite.CannonBooster;
 import application.sprite.Invader;
 import application.sprite.Shield;
 import application.sprite.Castle;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.Socket;
 
 /*
  * The GameTimer is a subclass of the AnimationTimer class. It must override the handle method.
@@ -52,7 +43,6 @@ public class GameTimer extends AnimationTimer {
 	private long launchGM;
 	private GameStage gameStage;
 	public final Image bgGame = new Image("images/lawn.gif",GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,false,false);
-	private int highestScore;
 
 	private final static double SPAWN_DELAY = 3; //interval time for the rocks to be spawned
 	private final static double SPAWN_BOSS = 10; //time stamp when the boss shall be spawned
@@ -66,7 +56,6 @@ public class GameTimer extends AnimationTimer {
 		this.theScene = theScene;
 		this.myCannon = new Cannon("My Cannon", 178, 520);
 		this.myCastle = new Castle("My Castle", 0, 590);
-		this.highestScore = 0;
 
 		// instantiate the ArrayList of Cannon
 		this.invaders = new ArrayList<Invader>();
@@ -113,32 +102,22 @@ public class GameTimer extends AnimationTimer {
         }
 
 		if(bossCountdown >= GameTimer.SPAWN_BOSS){ //spawn boss when the time reaches 30 seconds
-        	this.spawnBoss();
-        	this.launchBoss = System.nanoTime();
+			this.spawnBoss();
+			this.launchBoss = System.nanoTime();
         }
 
 		if(spawnGM >= GameTimer.GM_INTERVAL){ //spawn powerups every 10 seconds
-        	this.spawnGameModifiers();
-        	this.launchGM = System.nanoTime();
-        	System.out.println("as");
+			this.spawnGameModifiers();
+			this.launchGM = System.nanoTime();
+			System.out.println("as");
         }
 
 		this.showStatus(gameTimer);
 
 		if ((int)(10-gameTimer + 1) == 0){ // player wins if castle is still alive after time runs out
 			System.out.println("dat isa lang to");
-//			try {
-//		        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ChatOverlay.socket.getOutputStream()));
-//		        writer.write("points: " + this.myCastle.getScore());
-//		        writer.newLine();
-//		        writer.flush();
-//		    } catch (IOException e) {
-//		        e.printStackTrace();
-//		    }
-//			this.gameStage.flashGameOver(WIN_NUM);
 			this.stop();
 			getWinner();
-//			this.stop();
 		}
 
 
@@ -160,9 +139,9 @@ public class GameTimer extends AnimationTimer {
 
 	private void renderGameModifiers(){
     	//iterate through the powerups and render them into the canvas
-    	for(GameModifier gm: this.gameModifiers){
-    		gm.render(this.gc);
-    	}
+		for(GameModifier gm: this.gameModifiers){
+			gm.render(this.gc);
+		}
     }
 
 	// method that will spawn/instantiate three invaders at a random x,y location
@@ -175,44 +154,44 @@ public class GameTimer extends AnimationTimer {
 
 			if(itype == 0){
 	        	ShieldedInvader invader = new ShieldedInvader(x,0); //instantiate a shielded invader
-	        	this.invaders.add(invader);
-	        }else if(itype == 1){
-	        	UnshieldedInvader invader = new UnshieldedInvader(x,0); //instantiate a unshielded invader
-	        	this.invaders.add(invader);
-	        }
+				this.invaders.add(invader);
+			}else if(itype == 1){
+				UnshieldedInvader invader = new UnshieldedInvader(x,0); //instantiate a unshielded invader
+				this.invaders.add(invader);
+			}
 		}
 
 	}
 
 	private void spawnBoss(){
-    	Random r = new Random();
-    	int x = r.nextInt(GameStage.WINDOW_WIDTH- Dragon.BOSS_WIDTH);
+		Random r = new Random();
+		int x = r.nextInt(GameStage.WINDOW_WIDTH- Dragon.BOSS_WIDTH);
 
-        //instantiate the dragon (boss)
-    	Dragon boss = new Dragon(x,0);
-    	this.invaders.add(boss); //add the dragon into the arraylist of invaders
+		//instantiate the dragon (boss)
+		Dragon boss = new Dragon(x,0);
+		this.invaders.add(boss); //add the dragon into the arraylist of invaders
 
-    }
+	}
 
 	private void spawnGameModifiers(){
 
-    	Random r = new Random();
-    	int gmType = r.nextInt(3); //randomizer for the powerup type that will appear
+		Random r = new Random();
+		int gmType = r.nextInt(3); //randomizer for the powerup type that will appear
 
 		// randomizes the spawning position
-    	int x = r.nextInt(GameStage.WINDOW_WIDTH - GameModifier.GAMEMODIFIER_WIDTH);
-    	int y = r.nextInt(GameStage.WINDOW_HEIGHT - Cannon.Cannon_WIDTH - Castle.Castle_HEIGHT);
+		int x = r.nextInt(GameStage.WINDOW_WIDTH - GameModifier.GAMEMODIFIER_WIDTH);
+		int y = r.nextInt(GameStage.WINDOW_HEIGHT - Cannon.Cannon_WIDTH - Castle.Castle_HEIGHT);
 
         if(gmType == 0){
         	Bomb gameModifier = new Bomb(x,y); //instantiate a fuel
         	this.gameModifiers.add(gameModifier); //add to powerup arraylist
         }else if(gmType == 1){
         	CannonBooster gameModifier = new CannonBooster(x,y); //instantiate a star
-        	this.gameModifiers.add(gameModifier);//add to the powerup arraylsit
-        } else {
-        	Shield gameModifier = new Shield(x,y);
-        	this.gameModifiers.add(gameModifier);//add to the powerup arraylsit
-        }
+			this.gameModifiers.add(gameModifier);//add to the powerup arraylsit
+		} else {
+			Shield gameModifier = new Shield(x,y);
+			this.gameModifiers.add(gameModifier);//add to the powerup arraylsit
+		}
 
     }
 
@@ -232,13 +211,6 @@ public class GameTimer extends AnimationTimer {
 						// arraylist
 				bList.remove(i);
 			}
-
-			/*
-			 * // * TODO: If a bullet is visible, move the bullet, else, remove the bullet
-			 * from
-			 * // the bullet array list.
-			 * //
-			 */
 		}
 	}
 
@@ -254,24 +226,19 @@ public class GameTimer extends AnimationTimer {
             }else{ //if not alive, remove the rock from the rock arraylist
                 invaders.remove(i);
             }
-			/*
-			 * TODO: *If a Invader is alive, move the Invader. Else, remove the Invader
-			 * from the
-			 * invaders arraylist.
-			 */
 		}
 	}
 
 	private void checkGM(){
-    	for(int i = 0; i<this.gameModifiers.size(); i++){
-    		GameModifier gm = this.gameModifiers.get(i);
-    		//checker if the powerup is visible
-    		if(gm.isVisible()){ //if visible, check if it collides with myShip by calling checkCollision method
-    			gm.checkCollision(this.myCastle, this.myCannon);
-    		}else{ //if not visible, remove from powerups arraylist
-    			gameModifiers.remove(i);
-    		}
-    	}
+		for(int i = 0; i<this.gameModifiers.size(); i++){
+			GameModifier gm = this.gameModifiers.get(i);
+			//checker if the powerup is visible
+			if(gm.isVisible()){ //if visible, check if it collides with myShip by calling checkCollision method
+				gm.checkCollision(this.myCastle, this.myCannon);
+			}else{ //if not visible, remove from powerups arraylist
+				gameModifiers.remove(i);
+			}
+		}
     }
 
 	// method that will listen and handle the key press events
@@ -341,40 +308,10 @@ public class GameTimer extends AnimationTimer {
 	void getWinner() {
 		System.out.println(String.valueOf(myCastle.getHighestScore()) + " " + String.valueOf(myCastle.getScore()));
 		if(myCastle.getHighestScore() == myCastle.getScore()) {
-        	this.gameStage.flashGameOver(WIN_NUM);
-//        	this.stop();
-        } else {
-        	this.gameStage.flashGameOver(LOSE_NUM);
-//        	this.stop();
-        }
-
-
-//		Map.Entry<Socket,Integer> winnerScore = null;
-//		try {
-//			int highest = 0;
-//            BufferedReader reader = new BufferedReader(new InputStreamReader(ChatOverlay.socket.getInputStream()));
-//            String message;
-//            System.out.println("dito!!");
-//            while ((message = reader.readLine()) != null) {
-//            	System.out.println("score:"+message);
-//            	if(Integer.valueOf(message) > highest) {
-//            		highest = Integer.valueOf(message);
-//            		System.out.println("here!!");
-//            	}
-////                chatArea.appendText(message + "\n");
-//            }
-//            System.out.println("highest score: " + String.valueOf(highest));
-//            if(highest == myCastle.getScore()) {
-//            	this.gameStage.flashGameOver(WIN_NUM);
-//            	this.stop();
-//            } else {
-//            	this.gameStage.flashGameOver(LOSE_NUM);
-//            	this.stop();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
+			this.gameStage.flashGameOver(WIN_NUM);
+		} else {
+			this.gameStage.flashGameOver(LOSE_NUM);
+		}
 	}
 
 	public Castle getCastle() {

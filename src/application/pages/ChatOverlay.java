@@ -2,10 +2,7 @@ package application.pages;
 
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import application.main.GameStage;
-import application.pages.Menu;
-import application.sprite.Castle;
 import javafx.application.Platform;
 import java.io.*;
 import java.net.Socket;
@@ -48,18 +45,9 @@ public class ChatOverlay extends Pane{
         inputField.requestFocus();
     }
 
-	private boolean isNotPureInteger(String str) {
-	    try {
-	        Integer.parseInt(str);
-	        return false; // It is a pure integer
-	    } catch (NumberFormatException e) {
-	        return true; // It is not a pure integer
-	    }
-	}
-
     private void connectToChatServer() {
         try {
-            socket = new Socket("localhost", 6000);
+            socket = new Socket("localhost", 5050);
 
             // Create a separate thread to handle incoming messages
             Thread receiveThread = new Thread(() -> {
@@ -67,54 +55,46 @@ public class ChatOverlay extends Pane{
                     BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String message;
                     while ((message = reader.readLine()) != null) {
-                    	if(!message.startsWith("points: ") && !message.startsWith("confirm") && !message.startsWith("pause")) {
-                    		chatArea.appendText(message + "\n");
-                    	} else {
-		                	System.out.println(message);
-		                	if (message.startsWith("points: ")) {
-		                        String scoreString = message.substring(8);
-		                        int score = Integer.parseInt(scoreString);
-		                        if (score > gamestage.getGameTimer().getCastle().getHighestScore()) {
-		                        	gamestage.getGameTimer().getCastle().setHighestScore(score);
-		                            System.out.println("New highest score: " + gamestage.getGameTimer().getCastle().getHighestScore());
-		                        }
-		                    } else {
-		                    	if (message.startsWith("confirm")) {
-		                    		Platform.runLater(() -> {
-		                    		    gamestage.setStage((gamestage.getCurrentStage()));
-		                    		});
-//		                    		gamestage.setStage(gamestage.getCurrentStage());
-//		                    		gamestage.getGameTimer().start();
-//		                    		gamestage.getStage().show();
-			                    } else {
-			                    	if (message.startsWith("pause")) {
-			                    		Platform.runLater(() -> {
-			                    			if(!gamestage.isPaused()) {
-			                            		gamestage.getGameTimer().stop();
-			                            		gamestage.startPause = System.nanoTime();
-			                            		gamestage.pauseButton.setImage(GameStage.resume);
-			                            		gamestage.setPaused(true);
-			                            		gamestage.getOverlayPane().setVisible(true);
-			                            		gamestage.pauseButton.toFront();
-//			                            		button.setText("Resume");
-			                            	} else {
-			                            		gamestage.endPause = System.nanoTime();
-			                            		gamestage.getGameTimer().addTime(gamestage.endPause-gamestage.startPause);
-			                            		gamestage.getGameTimer().start();
-			                            		gamestage.pauseButton.setImage(GameStage.pause);
-			                            		gamestage.setPaused(false);
-			                            		gamestage.getOverlayPane().setVisible(false);
-			                            		gamestage.pauseButton.toFront();
-//			                            		button.setText("Pause");
-			                            	}
-			                    		});
-				                    }
-			                    }
-		                    }
-//                	                chatArea.appendText(message + "\n");
-
-                    	}
-
+                        if(!message.startsWith("points: ") && !message.startsWith("confirm") && !message.startsWith("pause")) {
+                            chatArea.appendText(message + "\n");
+                        } else {
+                            System.out.println(message);
+                            if (message.startsWith("points: ")) {
+                                String scoreString = message.substring(8);
+                                int score = Integer.parseInt(scoreString);
+                                if (score > gamestage.getGameTimer().getCastle().getHighestScore()) {
+                                    gamestage.getGameTimer().getCastle().setHighestScore(score);
+                                    System.out.println("New highest score: " + gamestage.getGameTimer().getCastle().getHighestScore());
+                                }
+                            } else {
+                                if (message.startsWith("confirm")) {
+                                    Platform.runLater(() -> {
+                                        gamestage.setStage((gamestage.getCurrentStage()));
+                                    });
+                                } else {
+                                    if (message.startsWith("pause")) {
+                                        Platform.runLater(() -> {
+                                            if(!gamestage.isPaused()) {
+                                                gamestage.getGameTimer().stop();
+                                                gamestage.startPause = System.nanoTime();
+                                                gamestage.pauseButton.setImage(GameStage.resume);
+                                                gamestage.setPaused(true);
+                                                gamestage.getOverlayPane().setVisible(true);
+                                                gamestage.pauseButton.toFront();
+                                            } else {
+                                                gamestage.endPause = System.nanoTime();
+                                                gamestage.getGameTimer().addTime(gamestage.endPause-gamestage.startPause);
+                                                gamestage.getGameTimer().start();
+                                                gamestage.pauseButton.setImage(GameStage.pause);
+                                                gamestage.setPaused(false);
+                                                gamestage.getOverlayPane().setVisible(false);
+                                                gamestage.pauseButton.toFront();
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -132,7 +112,6 @@ public class ChatOverlay extends Pane{
                             writer.write(Menu.userName +": "+message);
                             writer.newLine();
                             writer.flush();
-
                             inputField.clear();
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -144,9 +123,5 @@ public class ChatOverlay extends Pane{
             e.printStackTrace();
         }
     }
-
-//    public Socket getSocket() {
-//    	return this.socket;
-//    }
 
 }

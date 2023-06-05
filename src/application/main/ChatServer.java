@@ -20,16 +20,17 @@ public class ChatServer {
 
     public void startServer() {
         try {
-            ServerSocket serverSocket = new ServerSocket(6000);
-            System.out.println("Server started. Waiting for connections...");
+            try (ServerSocket serverSocket = new ServerSocket(5050)) {
+                System.out.println("Server started. Waiting for connections...");
 
-            while (true) {
-                Socket clientSocket = serverSocket.accept();
-                clients.add(clientSocket);
-                System.out.println("New client connected: " + clientSocket.getInetAddress().getHostAddress());
+                while (true) {
+                    Socket clientSocket = serverSocket.accept();
+                    clients.add(clientSocket);
+                    System.out.println("New client connected: " + clientSocket.getInetAddress().getHostAddress());
 
-                Thread clientThread = new Thread(() -> handleClient(clientSocket));
-                clientThread.start();
+                    Thread clientThread = new Thread(() -> handleClient(clientSocket));
+                    clientThread.start();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -84,9 +85,7 @@ public class ChatServer {
             try {
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
                 for (Map.Entry<Socket, Integer> entry : playerPoints.entrySet()) {
-                    Socket playerSocket = entry.getKey();
                     int points = entry.getValue();
-//                    String message = "Player " + playerSocket.getInetAddress().getHostAddress() + " points: " + points;
                     String message = "points: " + String.valueOf(points);
                     writer.write(message);
                     writer.newLine();

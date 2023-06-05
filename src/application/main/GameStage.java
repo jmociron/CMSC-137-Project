@@ -1,11 +1,9 @@
 package application.main;
 
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
@@ -19,9 +17,7 @@ import javafx.util.Duration;
 
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 // PAGES:
 import application.main.GameStage;
@@ -88,15 +84,15 @@ public class GameStage {
 		button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-            	try {
-            		System.out.println("magpause ka!!");
-        			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ChatOverlay.socket.getOutputStream()));
-        	        writer.write("pause");
-        	        writer.newLine();
-        	        writer.flush();
-        		} catch (IOException f) {
-        	        f.printStackTrace();
-        	    }
+				try {
+					System.out.println("magpause ka!!");
+					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ChatOverlay.socket.getOutputStream()));
+					writer.write("pause");
+					writer.newLine();
+					writer.flush();
+				} catch (IOException f) {
+					f.printStackTrace();
+				}
             }
         });
 	}

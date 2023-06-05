@@ -1,9 +1,7 @@
 package application.sprite;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import application.pages.ChatOverlay;
@@ -47,34 +45,34 @@ public class Castle extends Sprite {
     }
 
     public void die() {
-    	this.loadImage(Castle.DCastle_IMAGE);
+        this.loadImage(Castle.DCastle_IMAGE);
         this.alive = false;
 
     }
 
     void decreaseHealth(int damage) {
-    	this.health -= damage;
+        this.health -= damage;
     }
 
     public int getHealth() {
-    	return this.health;
+        return this.health;
     }
 
     void increaseScore() {
-    	if(isBoosted()) {
-    		this.score++;
+        if(isBoosted()) {
+            this.score++;
 
-    	}
-    	this.score++;
-    	updateMap();
+        }
+        this.score++;
+        updateMap();
     }
 
     public int getScore() {
-    	return this.score;
+        return this.score;
     }
 
     boolean isBoosted() {
-    	return this.isBoosted;
+        return this.isBoosted;
     }
 
     void setBoosted(){ //setter
@@ -86,52 +84,31 @@ public class Castle extends Sprite {
 	}
 
     void resetBoost() {
-    	this.isBoosted = false;
+        this.isBoosted = false;
     }
 
     void increaseHealth(int health) {
-    	this.health += health;
+        this.health += health;
     }
 
     public void updateMap() {
 		try {
-	        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ChatOverlay.socket.getOutputStream()));
-	        writer.write("points: " + this.getScore());
-	        writer.newLine();
-	        writer.flush();
-	        System.out.println("point sent!!");
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
-
-//		try {
-//            BufferedReader reader = new BufferedReader(new InputStreamReader(ChatOverlay.socket.getInputStream()));
-//            String message;
-//            System.out.println("dito!!");
-//            while ((message = reader.readLine()) != null) {
-//            	System.out.println(message);
-//            	if (message.startsWith("points: ")) {
-//                    String scoreString = message.substring(8);
-//                    int score = Integer.parseInt(scoreString);
-//                    if (score > highestScore) {
-//                        highestScore = score;
-//                        System.out.println("New highest score: " + highestScore);
-//                    }
-//                }
-////	                chatArea.appendText(message + "\n");
-//            }
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ChatOverlay.socket.getOutputStream()));
+            writer.write("points: " + this.getScore());
+            writer.newLine();
+            writer.flush();
+            System.out.println("point sent!!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getHighestScore() {
-    	return this.highestScore;
+        return this.highestScore;
     }
 
     public void setHighestScore(int score) {
-    	this.highestScore = score;
+        this.highestScore = score;
     }
 
 

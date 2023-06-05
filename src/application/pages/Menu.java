@@ -1,4 +1,5 @@
 package application.pages;
+import application.main.GameStage;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,15 +17,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-
-import com.sun.xml.internal.ws.org.objectweb.asm.Label;
-
-import application.main.GameStage;
-
 
 public class Menu {
 
@@ -135,11 +130,11 @@ public class Menu {
         Button b3 = new Button("    About    ");
 
         b1.setStyle("-fx-font: 15 Verdana; -fx-background-color: #369DC6; -fx-text-fill: #FFFAFA; "
-        		+ "-fx-border-color:#FFFAFA; -fx-border-width: 3px; -fx-border-radius: 20; -fx-background-radius: 20;");
-        b2.setStyle("-fx-font: 15 Verdana; -fx-background-color: #369DC6; -fx-text-fill: #FFFAFA; "
-        		+ "-fx-border-color:#FFFAFA; -fx-border-width: 3px; -fx-border-radius: 20; -fx-background-radius: 20;");
-        b3.setStyle("-fx-font: 15 Verdana; -fx-background-color: #369DC6; -fx-text-fill: #FFFAFA; "
-        		+ "-fx-border-color:#FFFAFA; -fx-border-width: 3px; -fx-border-radius: 20; -fx-background-radius: 20;");
+				+ "-fx-border-color:#FFFAFA; -fx-border-width: 3px; -fx-border-radius: 20; -fx-background-radius: 20;");
+		b2.setStyle("-fx-font: 15 Verdana; -fx-background-color: #369DC6; -fx-text-fill: #FFFAFA; "
+				+ "-fx-border-color:#FFFAFA; -fx-border-width: 3px; -fx-border-radius: 20; -fx-background-radius: 20;");
+		b3.setStyle("-fx-font: 15 Verdana; -fx-background-color: #369DC6; -fx-text-fill: #FFFAFA; "
+				+ "-fx-border-color:#FFFAFA; -fx-border-width: 3px; -fx-border-radius: 20; -fx-background-radius: 20;");
 
         vbox.getChildren().addAll(text);
         vbox.getChildren().add(b1);
@@ -153,45 +148,43 @@ public class Menu {
         return vbox;
     }
 
-    public void startGame(Button b1, GameStage theGameStage) { // for starting the game
-    	b1.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-            	try {
-        			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ChatOverlay.socket.getOutputStream()));
-        	        writer.write("confirm");
-        	        writer.newLine();
-        	        writer.flush();
-        		} catch (IOException f) {
-        	        f.printStackTrace();
-        	    }
-//            	GameStage theGameStage = new GameStage();
-//        		theGameStage.setStage();
-                System.out.println(b1.getText());
+    public void startGame(Button b, GameStage theGameStage) { // for starting the game
+		b.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				try {
+					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ChatOverlay.socket.getOutputStream()));
+					writer.write("confirm");
+					writer.newLine();
+					writer.flush();
+				} catch (IOException f) {
+					f.printStackTrace();
+				}
+                System.out.println(b.getText());
             }
         });
     }
 
-	public void startInstructions(Button b2) { //for instructions
-    	b2.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-            	Instructions instructions = new Instructions();
-            	instructions.setStage(stage);
-                System.out.println(b2.getText());
-            }
-        });
+	public void startInstructions(Button b) { //for the instructions page
+		b.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				Instructions instructions = new Instructions();
+				instructions.setStage(stage);
+				System.out.println(b.getText());
+			}
+		});
     }
 
-	public void startAbout(Button b3) { //for instructions
-    	b3.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-            	About about = new About();
-            	about.setStage(stage);
-                System.out.println(b3.getText());
-            }
-        });
+	public void startAbout(Button b) { //for the about page
+		b.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				About about = new About();
+				about.setStage(stage);
+				System.out.println(b.getText());
+			}
+		});
     }
 
 	public void setStage(Stage stage) {
