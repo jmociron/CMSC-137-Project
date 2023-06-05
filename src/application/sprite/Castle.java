@@ -1,5 +1,10 @@
 package application.sprite;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
+import application.pages.ChatOverlay;
 import javafx.scene.image.Image;
 
 public class Castle extends Sprite {
@@ -9,11 +14,12 @@ public class Castle extends Sprite {
             false, false);
     public final static Image DCastle_IMAGE = new Image("images/destroyed_castle.png", Castle.Castle_WIDTH, Castle.Castle_HEIGHT,
             false, false);
-    
+
     public final static int Castle_WIDTH = 432;
     public final static int Castle_HEIGHT = 178;
     private int health;
     private int score;
+    private int highestScore;
     private boolean isBoosted;
     private BoosterTimer timer;
 
@@ -24,6 +30,7 @@ public class Castle extends Sprite {
         this.health = 50;
         this.alive = true;
         this.isBoosted = false;
+        this.highestScore = 0;
         this.loadImage(Castle.Castle_IMAGE);
     }
 
@@ -38,32 +45,34 @@ public class Castle extends Sprite {
     }
 
     public void die() {
-    	this.loadImage(Castle.DCastle_IMAGE);
+        this.loadImage(Castle.DCastle_IMAGE);
         this.alive = false;
 
     }
 
     void decreaseHealth(int damage) {
-    	this.health -= damage;
+        this.health -= damage;
     }
 
     public int getHealth() {
-    	return this.health;
+        return this.health;
     }
 
     void increaseScore() {
-    	if(isBoosted()) {
-    		this.score++;
-    	}
-    	this.score++;
+        if(isBoosted()) {
+            this.score++;
+
+        }
+        this.score++;
+        updateMap();
     }
 
     public int getScore() {
-    	return this.score;
+        return this.score;
     }
 
     boolean isBoosted() {
-    	return this.isBoosted;
+        return this.isBoosted;
     }
 
     void setBoosted(){ //setter
@@ -75,11 +84,31 @@ public class Castle extends Sprite {
 	}
 
     void resetBoost() {
-    	this.isBoosted = false;
+        this.isBoosted = false;
     }
 
     void increaseHealth(int health) {
-    	this.health += health;
+        this.health += health;
+    }
+
+    public void updateMap() {
+		try {
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ChatOverlay.socket.getOutputStream()));
+            writer.write("points: " + this.getScore());
+            writer.newLine();
+            writer.flush();
+            System.out.println("point sent!!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getHighestScore() {
+        return this.highestScore;
+    }
+
+    public void setHighestScore(int score) {
+        this.highestScore = score;
     }
 
 
