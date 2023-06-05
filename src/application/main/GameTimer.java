@@ -331,7 +331,7 @@ public class GameTimer extends AnimationTimer {
 		this.gc.fillText("Health: "+String.valueOf(this.myCastle.getHealth()), 10, 750);
 	}
 
-	void addTime(long time) {
+	public void addTime(long time) {
 		this.endGame += time;
 		this.startSpawn += time;
 		this.launchBoss += time;

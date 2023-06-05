@@ -67,7 +67,7 @@ public class ChatOverlay extends Pane{
                     BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String message;
                     while ((message = reader.readLine()) != null) {
-                    	if(!message.startsWith("points: ") && !message.startsWith("confirm")) {
+                    	if(!message.startsWith("points: ") && !message.startsWith("confirm") && !message.startsWith("pause")) {
                     		chatArea.appendText(message + "\n");
                     	} else {
 		                	System.out.println(message);
@@ -86,6 +86,29 @@ public class ChatOverlay extends Pane{
 //		                    		gamestage.setStage(gamestage.getCurrentStage());
 //		                    		gamestage.getGameTimer().start();
 //		                    		gamestage.getStage().show();
+			                    } else {
+			                    	if (message.startsWith("pause")) {
+			                    		Platform.runLater(() -> {
+			                    			if(!gamestage.isPaused()) {
+			                            		gamestage.getGameTimer().stop();
+			                            		gamestage.startPause = System.nanoTime();
+			                            		gamestage.pauseButton.setImage(GameStage.resume);
+			                            		gamestage.setPaused(true);
+			                            		gamestage.getOverlayPane().setVisible(true);
+			                            		gamestage.pauseButton.toFront();
+//			                            		button.setText("Resume");
+			                            	} else {
+			                            		gamestage.endPause = System.nanoTime();
+			                            		gamestage.getGameTimer().addTime(gamestage.endPause-gamestage.startPause);
+			                            		gamestage.getGameTimer().start();
+			                            		gamestage.pauseButton.setImage(GameStage.pause);
+			                            		gamestage.setPaused(false);
+			                            		gamestage.getOverlayPane().setVisible(false);
+			                            		gamestage.pauseButton.toFront();
+//			                            		button.setText("Pause");
+			                            	}
+			                    		});
+				                    }
 			                    }
 		                    }
 //                	                chatArea.appendText(message + "\n");
