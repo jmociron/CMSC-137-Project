@@ -121,6 +121,7 @@ public class Menu {
             public void handle(MouseEvent e) {
 				userName = inputField.getText();
 				hostIP = hostField.getText();
+				gamestage.setOverlayPane();
 
 				if(userName.length() == 0){
 					checkUsername.setText("Please enter your username.");

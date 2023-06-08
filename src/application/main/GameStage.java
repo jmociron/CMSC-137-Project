@@ -54,9 +54,6 @@ public class GameStage {
 		this.currentstage = currentstage;
 		this.canvas = new Canvas(GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT);
 		this.gc = canvas.getGraphicsContext2D();
-
-
-		this.overlayPane = new ChatOverlay(this);
 	}
 
 	// method to add the stage elements
@@ -112,6 +109,10 @@ public class GameStage {
 				stage.setScene(gameover.getScene());
 			}
 		});
+	}
+
+	public void setOverlayPane() {
+		this.overlayPane = new ChatOverlay(this);
 	}
 
 	public GameTimer getGameTimer() {
