@@ -101,13 +101,13 @@ public class Menu {
 		enterHost.setStroke(Color.web("#614635",1.0));
 		enterHost.setStrokeWidth(1);
 
-		// Prompt for empty username
+		// Prompt for empty host
 		Text checkHost = new Text();
 		checkHost.setFill(Color.web("#FFFFFF",1.0));
 		Font checkHostFont = Font.font("Impact",FontWeight.EXTRA_BOLD,20);
-		checkUsername.setFont(checkHostFont);
-		checkUsername.setStroke(Color.web("#256B55",1.0));
-		checkUsername.setStrokeWidth(1);
+		checkHost.setFont(checkHostFont);
+		checkHost.setStroke(Color.web("#256B55",1.0));
+		checkHost.setStrokeWidth(1);
 
 		// Text field for host IP
 		TextArea hostField;
@@ -115,7 +115,7 @@ public class Menu {
 		hostField.setStyle("-fx-font: 25 Verdana; -fx-background-color: #369DC6; -fx-text-fill: #000000; " + "-fx-border-color:#369DC6; -fx-border-width: 3px;");
 		hostField.setPrefHeight(10);
 
-		vbox.getChildren().addAll(text, checkUsername, inputField, enterHost, hostField, enterButton);
+		vbox.getChildren().addAll(text, checkUsername, inputField, enterHost, checkHost, hostField, enterButton);
 		enterButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
@@ -125,7 +125,7 @@ public class Menu {
 				if(userName.length() == 0){
 					checkUsername.setText("Please enter your username.");
 				} else if (hostIP.length() == 0) {
-					checkUsername.setText("Please enter your username.");
+					checkHost.setText("Please enter your host IP.");
 				} else {
 					menu.setVisible(true);
 					userInput.userInputView.setVisible(false);
