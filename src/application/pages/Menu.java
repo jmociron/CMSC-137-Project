@@ -35,9 +35,9 @@ public class Menu {
 	// CONSTANTS:
 	public static final int WINDOW_HEIGHT = 408;
 	public static final int WINDOW_WIDTH = 768;
-	public final static String START = "start";
-	public final static String INSTRUCTIONS = "instructions";
-	public final static String ABOUT = "about";
+	public static final String CONFIRM = "CONFIRM";
+
+	// VARIABLES:
 	public static String userName = "";
 
 	public Menu() {
@@ -154,7 +154,7 @@ public class Menu {
 			public void handle(MouseEvent e) {
 				try {
 					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ChatOverlay.socket.getOutputStream()));
-					writer.write("confirm");
+					writer.write(CONFIRM);
 					writer.newLine();
 					writer.flush();
 				} catch (IOException f) {

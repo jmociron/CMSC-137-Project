@@ -27,6 +27,7 @@ import application.pages.ChatOverlay;
 public class GameStage {
 	public static final int WINDOW_HEIGHT = 768;
 	public static final int WINDOW_WIDTH = 432;
+
 	private Scene scene;
 	private Stage stage;
 	private Stage currentstage;
@@ -39,9 +40,12 @@ public class GameStage {
 	public ImageView pauseButton;
 	public long endPause;
 	private ChatOverlay overlayPane;
+
+	// CONSTANTS
 	public final static Image pause = new Image("images/pause.png",50,50,false,false);
 	public final static Image resume = new Image("images/resume.png",40,40,false,false);
 	public final Image bgGame = new Image("images/lawn.gif",GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,false,false);
+	public static final String PAUSE = "PAUSE";
 
 	// the class constructor
 	public GameStage(Stage currentstage) {
@@ -62,7 +66,6 @@ public class GameStage {
 		this.isPaused = false;
 		this.startPause = System.nanoTime();
 		this.endPause = System.nanoTime();
-		// set stage elements here
 		this.root.getChildren().add(canvas);
 		pauseButton = new ImageView(pause);
 		this.root.getChildren().add(pauseButton);
@@ -85,9 +88,9 @@ public class GameStage {
             @Override
             public void handle(MouseEvent e) {
 				try {
-					System.out.println("magpause ka!!");
+					System.out.println("Game paused.");
 					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ChatOverlay.socket.getOutputStream()));
-					writer.write("pause");
+					writer.write(PAUSE);
 					writer.newLine();
 					writer.flush();
 				} catch (IOException f) {

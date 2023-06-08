@@ -18,7 +18,6 @@ public class ChatOverlay extends Pane{
 		setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);"); // Set the background color and transparency
         setPrefSize(432, 768); // Set the preferred size of the overlay screen
         this.gamestage = gamestage;
-        System.out.println("haYS");
         chatArea = new TextArea();
         chatArea.setEditable(false);
         chatArea.setPrefHeight(500);
@@ -46,7 +45,7 @@ public class ChatOverlay extends Pane{
 
     private void connectToChatServer() {
         try {
-            socket = new Socket("localhost", 6062);
+            socket = new Socket("localhost", 6064);
             Thread receiveThread = new Thread(() -> { // create a separate thread to handle incoming messages
                 try {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -61,13 +60,14 @@ public class ChatOverlay extends Pane{
                             }
                             continue;
                         }
-                        if (message.startsWith("confirm")) {
+                        if (Menu.CONFIRM.equals(message)) {
                             Platform.runLater(() -> { // allows for code to be executed within the thread
-                                gamestage.setStage((gamestage.getCurrentStage()));
+                                gamestage.setStage((gamestage.getCurrentStage())); // starts game for the client
                             });
                             continue;
                         }
-                        if (message.startsWith("pause")) {
+                        // if (message.startsWith("pause")) {
+                        if (GameStage.PAUSE.equals(message)) {
                             Platform.runLater(() -> { // allows for code to be executed within the thread
                                 if(!gamestage.isPaused()) {
                                     gamestage.getGameTimer().stop();
