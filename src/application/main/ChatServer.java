@@ -12,6 +12,7 @@ public class ChatServer {
 
     private List<Socket> clients = new ArrayList<>(); // keeps track of all connected clients
     private Map<Socket, Integer> playerPoints = new HashMap<>(); // saves points per client
+    public static final int PORT_NUMBER = 6065;
 
     // starts the server and waits for client connections
     public static void main(String[] args) {
@@ -21,7 +22,7 @@ public class ChatServer {
 
     public void startServer() {
         try {
-            try (ServerSocket serverSocket = new ServerSocket(6065)) {
+            try (ServerSocket serverSocket = new ServerSocket(PORT_NUMBER)) {
                 System.out.println("Server started. Waiting for connections...");
                 while (true) { // waits for client connections
                     Socket clientSocket = serverSocket.accept();

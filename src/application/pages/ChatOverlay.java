@@ -2,6 +2,7 @@ package application.pages;
 
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
+import application.main.ChatServer;
 import application.main.GameStage;
 import javafx.application.Platform;
 import java.io.*;
@@ -48,7 +49,7 @@ public class ChatOverlay extends Pane{
 
     private void connectToChatServer() {
         try {
-            socket = new Socket(Menu.hostIP, 6065);
+            socket = new Socket(Menu.hostIP, ChatServer.PORT_NUMBER);
             Thread receiveThread = new Thread(() -> { // create a separate thread to handle incoming messages
                 try {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
