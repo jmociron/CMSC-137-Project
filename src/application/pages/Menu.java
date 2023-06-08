@@ -196,7 +196,7 @@ public class Menu {
 		b.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				Instructions instructions = new Instructions();
+				Instructions instructions = new Instructions(getScene());
 				instructions.setStage(stage);
 				System.out.println(b.getText());
 			}
@@ -207,7 +207,7 @@ public class Menu {
 		b.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				About about = new About();
+				About about = new About(getScene());
 				about.setStage(stage);
 				System.out.println(b.getText());
 			}

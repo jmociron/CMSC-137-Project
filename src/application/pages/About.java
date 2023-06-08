@@ -21,6 +21,7 @@ public class About {
 
     // PROPERTIES:
 	private Scene scene;
+	private Scene menuScene;
 	private Stage stage;
 	private ImageView imgView;
 	private Text title;
@@ -31,9 +32,10 @@ public class About {
 	public static final int WINDOW_HEIGHT = 408;
 	public static final int WINDOW_WIDTH = 768;
 
-	public About() {
+	public About(Scene scene) {
 		StackPane root = new StackPane();
 		this.scene = new Scene(root, Menu.WINDOW_WIDTH, Menu.WINDOW_HEIGHT);
+		this.menuScene = scene;
 		this.imgView = this.createBG();
 		this.vbox = this.createVBox();
 
@@ -77,7 +79,7 @@ public class About {
         Button b1 = new Button("    Main Menu    ");
 
         b1.setStyle("-fx-font: 15 Verdana; -fx-background-color: #369DC6; -fx-text-fill: #FFFAFA; "
-        		+ "-fx-border-color:#FFFAFA; -fx-border-width: 3px; -fx-border-radius: 20; -fx-background-radius: 20;");
+			+ "-fx-border-color:#FFFAFA; -fx-border-width: 3px; -fx-border-radius: 20; -fx-background-radius: 20;");
 
         vbox.getChildren().addAll(title, body);
         vbox.getChildren().add(b1);
@@ -88,11 +90,10 @@ public class About {
     }
 
     public void startMenu(Button b1) { // for starting the game
-    	b1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		b1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-            	Menu welcomeStage = new Menu();
-		        welcomeStage.setStage(stage);
+				stage.setScene(menuScene);
                 System.out.println(b1.getText());
             }
         });
