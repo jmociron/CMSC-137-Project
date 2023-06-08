@@ -18,6 +18,8 @@ public class ChatOverlay extends Pane{
 		setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);"); // Set the background color and transparency
         setPrefSize(432, 768); // Set the preferred size of the overlay screen
         this.gamestage = gamestage;
+
+        // displays chat history
         chatArea = new TextArea();
         chatArea.setEditable(false);
         chatArea.setPrefHeight(500);
@@ -27,6 +29,7 @@ public class ChatOverlay extends Pane{
         chatArea.setLayoutY(100);
         chatArea.setPrefWidth(412);
 
+        // receives user input and sends to all other clients
         inputField = new TextArea();
         inputField.setPrefHeight(70);
         inputField.setWrapText(true);
@@ -66,7 +69,6 @@ public class ChatOverlay extends Pane{
                             });
                             continue;
                         }
-                        // if (message.startsWith("pause")) {
                         if (GameStage.PAUSE.equals(message)) {
                             Platform.runLater(() -> { // allows for code to be executed within the thread
                                 if(!gamestage.isPaused()) {
