@@ -48,7 +48,7 @@ public class ChatOverlay extends Pane{
 
     private void connectToChatServer() {
         try {
-            socket = new Socket("localhost", 6064);
+            socket = new Socket(Menu.hostIP, 6065);
             Thread receiveThread = new Thread(() -> { // create a separate thread to handle incoming messages
                 try {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -104,7 +104,7 @@ public class ChatOverlay extends Pane{
                     if (!message.isEmpty()) { // sends message to all clients if message is not empty
                         try {
                             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                            writer.write(Menu.userName +": "+message);
+                            writer.write(Menu.userName+": "+message);
                             writer.newLine();
                             writer.flush();
                             inputField.clear();

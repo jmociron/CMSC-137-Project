@@ -29,7 +29,7 @@ public class Menu {
 	private ImageView imgView;
 	private Text text;
 	private VBox vbox;
-	private VBox unameInput;
+	private VBox userInputView;
 	private GameStage gamestage;
 
 	// CONSTANTS:
@@ -39,15 +39,16 @@ public class Menu {
 
 	// VARIABLES:
 	public static String userName = "";
+	public static String hostIP = "";
 
 	public Menu() {
 		StackPane root = new StackPane();
 		this.scene = new Scene(root, Menu.WINDOW_WIDTH, Menu.WINDOW_HEIGHT);
 		this.imgView = this.createBG();
 		this.vbox = this.createVBox();
-		this.unameInput = this.enterUsername(this.vbox,this);
+		this.userInputView = this.enterUsername(this.vbox,this);
 		this.vbox.setVisible(false);
-		root.getChildren().addAll(this.imgView, this.unameInput, this.vbox);
+		root.getChildren().addAll(this.imgView, this.userInputView, this.vbox);
 	}
 
 	private ImageView createBG() {
@@ -65,20 +66,20 @@ public class Menu {
         vbox.setSpacing(10);
 
 		// Header
-		this.text = new Text("Enter Username");
+		this.text = new Text("Enter username:");
 		this.text.setX(0);
         this.text.setY(0);
         this.text.setFill(Color.web("#FFD7BD",1.0));
-		Font titleFont = Font.font("Impact",FontWeight.EXTRA_BOLD,50);
+		Font titleFont = Font.font("Impact",FontWeight.EXTRA_BOLD,35);
 		this.text.setFont(titleFont);
 		this.text.setStroke(Color.web("#614635",1.0));
-		this.text.setStrokeWidth(2);
+		this.text.setStrokeWidth(1);
 
 		// Text field for user input
 		TextArea inputField;
 		inputField = new TextArea();
 		inputField.setStyle("-fx-font: 25 Verdana; -fx-background-color: #369DC6; -fx-text-fill: #000000; " + "-fx-border-color:#369DC6; -fx-border-width: 3px;");
-		inputField.setPrefHeight(50);
+		inputField.setPrefHeight(10);
 
 		// Confirm button
 		Button enterButton = new Button("    Confirm    ");
@@ -86,22 +87,48 @@ public class Menu {
 
 		// Prompt for empty username
 		Text checkUsername = new Text();
-		checkUsername.setFill(Color.web("#D3FF69",1.0));
-		Font checkFont = Font.font("Impact",FontWeight.EXTRA_BOLD,30);
+		checkUsername.setFill(Color.web("#FFFFFF",1.0));
+		Font checkFont = Font.font("Impact",FontWeight.EXTRA_BOLD,20);
 		checkUsername.setFont(checkFont);
 		checkUsername.setStroke(Color.web("#256B55",1.0));
-		checkUsername.setStrokeWidth(2);
+		checkUsername.setStrokeWidth(1);
 
-		vbox.getChildren().addAll(text, checkUsername, inputField, enterButton);
+		// Prompt for host IP
+		Text enterHost = new Text("Enter host IP:");
+		enterHost.setFill(Color.web("#FFD7BD",1.0));
+		Font hostFont = Font.font("Impact",FontWeight.EXTRA_BOLD,30);
+		enterHost.setFont(hostFont);
+		enterHost.setStroke(Color.web("#614635",1.0));
+		enterHost.setStrokeWidth(1);
+
+		// Prompt for empty username
+		Text checkHost = new Text();
+		checkHost.setFill(Color.web("#FFFFFF",1.0));
+		Font checkHostFont = Font.font("Impact",FontWeight.EXTRA_BOLD,20);
+		checkUsername.setFont(checkHostFont);
+		checkUsername.setStroke(Color.web("#256B55",1.0));
+		checkUsername.setStrokeWidth(1);
+
+		// Text field for host IP
+		TextArea hostField;
+		hostField = new TextArea();
+		hostField.setStyle("-fx-font: 25 Verdana; -fx-background-color: #369DC6; -fx-text-fill: #000000; " + "-fx-border-color:#369DC6; -fx-border-width: 3px;");
+		hostField.setPrefHeight(10);
+
+		vbox.getChildren().addAll(text, checkUsername, inputField, enterHost, hostField, enterButton);
 		enterButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
 				userName = inputField.getText();
-				if(userName.length() > 0){
-					menu.setVisible(true);
-					userInput.unameInput.setVisible(false);
-				} else {
+				hostIP = hostField.getText();
+
+				if(userName.length() == 0){
 					checkUsername.setText("Please enter your username.");
+				} else if (hostIP.length() == 0) {
+					checkUsername.setText("Please enter your username.");
+				} else {
+					menu.setVisible(true);
+					userInput.userInputView.setVisible(false);
 				}
             }
         });
@@ -110,7 +137,7 @@ public class Menu {
 	}
 
     private VBox createVBox() {
-    	VBox vbox = new VBox();
+		VBox vbox = new VBox();
         this.text = new Text(" Battle of the\nBest Empires");
         this.text.setX(0);
         this.text.setY(0);
