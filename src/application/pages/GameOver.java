@@ -1,5 +1,9 @@
 package application.pages;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
 import application.main.GameTimer;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -30,6 +34,7 @@ public class GameOver {
 	// CONSTANTS:
 	public static final int WINDOW_HEIGHT = 408;
 	public static final int WINDOW_WIDTH = 768;
+	public static final String EXIT = "EXIT";
 	
 	public GameOver(int gameOverNum) {
 		StackPane root = new StackPane();
@@ -63,56 +68,47 @@ public class GameOver {
                 this.text.setStroke(Color.web("#614635",1.0));
                 this.text.setStrokeWidth(2);
 				break;
-	    	case GameTimer.WIN_NUM:
-	    		this.text = new Text("YOU WIN!");
-		        this.text.setX(250);
-		        this.text.setY(0);
-		        this.text.setFill(Color.web("#FFD7BD",1.0)); 
+			case GameTimer.WIN_NUM:
+				this.text = new Text("YOU WIN!");
+				this.text.setX(250);
+				this.text.setY(0);
+				this.text.setFill(Color.web("#FFD7BD",1.0)); 
 				Font loseTitleFont = Font.font("Impact",FontWeight.EXTRA_BOLD,80);
-                this.text.setFont(loseTitleFont);
-                this.text.setStroke(Color.web("#614635",1.0));
-                this.text.setStrokeWidth(2);
+				this.text.setFont(loseTitleFont);
+				this.text.setStroke(Color.web("#614635",1.0));
+				this.text.setStrokeWidth(2);
 				break;
-
-    	}
+		}
 
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(10));
         vbox.setSpacing(8);
 
 
-        Button b1 = new Button("    Play Again?    ");
-        Button b2 = new Button("    Exit    ");
+        Button b1 = new Button("    Exit    ");
 
         b1.setStyle("-fx-font: 15 Verdana; -fx-background-color: #369DC6; -fx-text-fill: #FFFAFA; "
         + "-fx-border-color:#FFFAFA; -fx-border-width: 3px; -fx-border-radius: 20; -fx-background-radius: 20;");
-        b2.setStyle("-fx-font: 15 Verdana; -fx-background-color: #369DC6; -fx-text-fill: #FFFAFA; "
-                + "-fx-border-color:#FFFAFA; -fx-border-width: 3px; -fx-border-radius: 20; -fx-background-radius: 20;");
-
+        
         vbox.getChildren().add(text);
         vbox.getChildren().add(b1);
-        vbox.getChildren().add(b2);
 
-        this.startMenu(b1);
-        this.exitGame(b2);
+        this.exitGame(b1);
 
         return vbox;
     }
 
-    private void startMenu(Button btn) {
-		btn.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			public void handle(MouseEvent arg0) {
-				Menu menu = new Menu();
-				menu.setStage(stage); //when clicked, it will go back to the splash screen
-			}
-		});
-
-	}
-
 	private void exitGame(Button btn) {
 		btn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent arg0) {
-				System.exit(0); //when clicked, the system will exit
+				try {
+					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ChatOverlay.socket.getOutputStream()));
+					writer.write(EXIT);
+					writer.newLine(); // marks end of message
+					writer.flush(); // ensures message is sent
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}

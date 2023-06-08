@@ -69,6 +69,14 @@ public class ChatOverlay extends Pane{
                             });
                             continue;
                         }
+                        if(GameOver.EXIT.equals(message)){
+                            try {
+                                socket.close();
+                                System.exit(0); //when clicked, the system will exit
+                            } catch (Exception e) {
+                                System.out.println(e);
+                            }
+                        }
                         if (GameStage.PAUSE.equals(message)) {
                             Platform.runLater(() -> { // allows for code to be executed within the thread
                                 if(!gamestage.isPaused()) {
