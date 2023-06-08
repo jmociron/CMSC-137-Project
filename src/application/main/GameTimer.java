@@ -45,7 +45,7 @@ public class GameTimer extends AnimationTimer {
 	public final Image bgGame = new Image("images/lawn.gif",GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,false,false);
 
 	private final static double SPAWN_DELAY = 3; //interval time for the rocks to be spawned
-	private final static double SPAWN_BOSS = 10; //time stamp when the boss shall be spawned
+	private final static double SPAWN_BOSS = 30; //time stamp when the boss shall be spawned
 	private final static double GM_INTERVAL = 5; //time stamp when the boss shall be spawned
 	public static final int LOSE_NUM = 0;
     public static final int WIN_NUM = 1;
@@ -114,7 +114,7 @@ public class GameTimer extends AnimationTimer {
 
 		this.showStatus(gameTimer);
 
-		if ((int)(10-gameTimer + 1) == 0){ // player wins if castle is still alive after time runs out
+		if ((int)(60-gameTimer + 1) == 0){ // player wins if castle is still alive after time runs out
 			this.stop();
 			getWinner();
 		}
@@ -290,7 +290,7 @@ public class GameTimer extends AnimationTimer {
         this.gc.setFont(theFont);
         this.gc.setFill(Color.WHITE); //set the text color
         //text for the runtime of the game
-        this.gc.fillText(String.valueOf((int)(10-gametimer + 1) + " secs"), 350, 30);
+        this.gc.fillText(String.valueOf((int)(60-gametimer + 1) + " secs"), 350, 30);
         //text for the score of the ship
         this.gc.fillText("Score: "+String.valueOf(this.myCastle.getScore()), 330, 750);
         //text for the strength of the ship
