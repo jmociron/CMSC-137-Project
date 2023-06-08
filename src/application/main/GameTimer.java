@@ -115,7 +115,6 @@ public class GameTimer extends AnimationTimer {
 		this.showStatus(gameTimer);
 
 		if ((int)(10-gameTimer + 1) == 0){ // player wins if castle is still alive after time runs out
-			System.out.println("dat isa lang to");
 			this.stop();
 			getWinner();
 		}
