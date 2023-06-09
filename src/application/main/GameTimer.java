@@ -306,7 +306,7 @@ public class GameTimer extends AnimationTimer {
 
 	void getWinner() {
 		System.out.println(String.valueOf(myCastle.getHighestScore()) + " " + String.valueOf(myCastle.getScore()));
-		if(myCastle.getHighestScore() == myCastle.getScore()) {
+		if(myCastle.getHighestScore() == myCastle.getScore() && myCastle.isAlive()) {
 			this.gameStage.flashGameOver(WIN_NUM);
 		} else {
 			this.gameStage.flashGameOver(LOSE_NUM);
